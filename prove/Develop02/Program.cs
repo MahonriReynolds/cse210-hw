@@ -55,13 +55,13 @@ class Program
                     Console.Write("\nJournal path > ");
                     workingJournal._storagePath = Console.ReadLine();
                     workingJournal.LoadJournal();
-                    if (!string.IsNullOrEmpty(workingJournal._journalTitle))
+                    if (string.IsNullOrEmpty(workingJournal._journalTitle))
                     {
-                        Console.WriteLine("Journal loaded!");
+                        Console.WriteLine("No journal found!");
                     }
                     else
                     {
-                        Console.WriteLine("No journal found!");
+                        Console.WriteLine("Journal loaded!");
                     }
                     break;
 
@@ -113,7 +113,14 @@ class Program
                         Console.Write("\nEntry to remove > "); 
                     } while (!int.TryParse(Console.ReadLine(), out entryToRemove));
                     workingJournal.RemoveEntry(entryToRemove);
-                    Console.WriteLine("Entry removed!");
+                    if (workingJournal._currentEntries.Count > entryToRemove)
+                    {
+                        Console.WriteLine("Entry removed!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No entries removed!");
+                    }
                     break;
                 
                 // add prompt
@@ -133,7 +140,14 @@ class Program
                         Console.Write("\nPrompt to remove > "); 
                     } while (!int.TryParse(Console.ReadLine(), out promptToRemove));
                     promptManager.RemovePrompt(promptToRemove);
-                    Console.WriteLine("Prompt removed!");
+                    if (promptManager._currentPrompts.Count > promptToRemove)
+                    {
+                        Console.WriteLine("Prompt removed!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No prompts removed!");
+                    }
                     break;
 
                 // just so 8 (quit) doesn't print out invalid option

@@ -15,7 +15,6 @@ public class Journal
 
     public void LoadJournal()
     {
-
         try
         {
             Journal handover = JsonConvert.DeserializeObject<Journal>(File.ReadAllText(this._storagePath));
@@ -25,9 +24,7 @@ public class Journal
         catch (FileNotFoundException)
         {
             
-        }
-        
-         
+        } 
     }
 
     public void SaveJournal()
