@@ -1,4 +1,3 @@
-using System;
 
 class Program
 {
@@ -20,7 +19,7 @@ class Program
         while (user_choice != 8)
         {
             // Display Menu.
-            Console.WriteLine("\nMain Menu:");
+            Console.WriteLine("\nMain Menu");
             Console.WriteLine(".....................");
             Console.WriteLine("| 0. New Journal    |");
             Console.WriteLine("| 1. Load Journal   |");
@@ -43,9 +42,9 @@ class Program
             {
                 // new journal
                 case 0:
-                    Console.Write("\nNew journal path: ");
+                    Console.Write("\nNew journal path > ");
                     workingJournal._storagePath = Console.ReadLine();
-                    Console.Write("New journal title: ");
+                    Console.Write("New journal title > ");
                     workingJournal._journalTitle = Console.ReadLine();
                     workingJournal.NewJournal();
                     Console.WriteLine("New journal created!");
@@ -53,23 +52,30 @@ class Program
 
                 // load journal
                 case 1:
-                    Console.Write("\nJournal path: ");
+                    Console.Write("\nJournal path > ");
                     workingJournal._storagePath = Console.ReadLine();
                     workingJournal.LoadJournal();
-                    Console.WriteLine("Journal loaded!");
+                    if (!string.IsNullOrEmpty(workingJournal._journalTitle))
+                    {
+                        Console.WriteLine("Journal loaded!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No journal found!");
+                    }
                     break;
 
                 // save journal
                 case 2:
                     if (string.IsNullOrEmpty(workingJournal._storagePath))
                     {
-                        Console.Write("\nNew journal path: ");
+                        Console.Write("\nNew journal path > ");
                         workingJournal._storagePath = Console.ReadLine();
                         workingJournal.NewJournal();
                     }
                     if (string.IsNullOrEmpty(workingJournal._journalTitle))
                     {
-                        Console.Write("\nNew journal title: ");
+                        Console.Write("\nNew journal title > ");
                         workingJournal._journalTitle = Console.ReadLine();
                     }
                     workingJournal.SaveJournal();
@@ -83,7 +89,7 @@ class Program
 
                 // write entry
                 case 4:
-                    Console.WriteLine("\nNew entry:");
+                    Console.WriteLine("\nNew entry >");
 
                     string workingPrompt = promptManager.GetPrompt();
                     string workingTime = DateTime.Now.ToShortDateString();
@@ -104,7 +110,7 @@ class Program
                     int entryToRemove;
                     do 
                     {
-                        Console.Write("\nEntry to remove: "); 
+                        Console.Write("\nEntry to remove > "); 
                     } while (!int.TryParse(Console.ReadLine(), out entryToRemove));
                     workingJournal.RemoveEntry(entryToRemove);
                     Console.WriteLine("Entry removed!");
@@ -112,7 +118,7 @@ class Program
                 
                 // add prompt
                 case 6:
-                    Console.Write("\nNew prompt: ");
+                    Console.Write("\nNew prompt > ");
                     string promptToAdd = Console.ReadLine();
                     promptManager.AddPrompt(promptToAdd);
                     Console.WriteLine("Prompt added!");
@@ -124,12 +130,22 @@ class Program
                     int promptToRemove;
                     do 
                     {
-                        Console.Write("\nEntry to remove: "); 
+                        Console.Write("\nPrompt to remove > "); 
                     } while (!int.TryParse(Console.ReadLine(), out promptToRemove));
                     promptManager.RemovePrompt(promptToRemove);
                     Console.WriteLine("Prompt removed!");
                     break;
 
+                // just so 8 (quit) doesn't print out invalid option
+                case 8:
+                    break;
+
+                // altert if option not in menu
+                default:
+                {
+                    Console.WriteLine("Invalid Option");
+                    break;
+                }
             }
         }
     }

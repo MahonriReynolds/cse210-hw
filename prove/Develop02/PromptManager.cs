@@ -7,6 +7,11 @@ public class PromptManager
     [JsonIgnore]
     public string _storagePath;
 
+    public PromptManager()
+    {
+        
+    }
+
     public void PopulatePrompts()
     {
         PromptManager handover = JsonConvert.DeserializeObject<PromptManager>(File.ReadAllText(this._storagePath));
@@ -47,10 +52,8 @@ public class PromptManager
         {
             this._currentPrompts.RemoveAt(promptIndex);
             SavePrompts();
-        }
-        
+        } 
     }
-
 }
 
 

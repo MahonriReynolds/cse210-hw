@@ -1,0 +1,25 @@
+{
+  "_journalTitle": "Example Journal for Demo/Testing",
+  "_currentEntries": [
+    {
+      "_date": "5/16/2024",
+      "_prompt": "What did I learn today?",
+      "_response": "Some C# stuff."
+    },
+    {
+      "_date": "5/16/2024",
+      "_prompt": "What did I learn today?",
+      "_response": "Some C# stuff. Maybe I should add a check to stop repeat prompts. "
+    },
+    {
+      "_date": "5/16/2024",
+      "_prompt": "What was the strongest emotion I felt today?",
+      "_response": "I coughed a couple times earlier so I guess that."
+    },
+    {
+      "_date": "5/16/2024",
+      "_prompt": "What was the most surprising thing that happened today?",
+      "_response": "This C# stuff working."
+    }
+  ]
+}
