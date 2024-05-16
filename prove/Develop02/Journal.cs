@@ -2,8 +2,8 @@
 using Newtonsoft.Json;
 public class Journal 
 {
-    public string _journalTitle;
-    public List<Entry> _currentEntries;
+    public string _journalTitle = "";
+    public List<Entry> _currentEntries = [];
 
     [JsonIgnore]
     public string _storagePath;
@@ -27,14 +27,27 @@ public class Journal
 
     public void NewJournal()
     {
-        File.Create(this._storagePath).Close();
-        SaveJournal();
+        try 
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(this._storagePath));
+        }
+        catch (ArgumentException)
+        {
+            File.Create(this._storagePath).Close();
+        }
     }
 
     public string ConvertToString(bool numbered = false)
     {
         string output = "\n\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~";
         output += $"\n--{this._journalTitle}--";
+
+        if (this._currentEntries?.Any() != true)
+        {
+            output += "\n\n*Empty*";
+            output += "\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n\n";
+            return output;
+        }
 
         if (!numbered)
         {
@@ -52,7 +65,6 @@ public class Journal
         }
 
         output += "\n~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~\n\n";
-
         return output;
     }
 
@@ -63,7 +75,11 @@ public class Journal
 
     public void RemoveEntry(int entryIndex)
     {
-        this._currentEntries.RemoveAt(entryIndex);
+        if(this._currentEntries.Count > entryIndex)
+        {
+            this._currentEntries.RemoveAt(entryIndex);
+        }
+        
     }
 
 }

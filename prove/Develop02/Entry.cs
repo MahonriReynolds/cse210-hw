@@ -14,7 +14,7 @@ public class Entry
 
     public string ConvertToString()
     {
-        return $"-{_date}-\n{_prompt}:\n{_response}";
+        return $"Date: {_date} - Prompt: {_prompt}\n{_response}";
     }
 
 }

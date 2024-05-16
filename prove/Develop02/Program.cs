@@ -67,6 +67,11 @@ class Program
                         workingJournal._storagePath = Console.ReadLine();
                         workingJournal.NewJournal();
                     }
+                    if (string.IsNullOrEmpty(workingJournal._journalTitle))
+                    {
+                        Console.Write("\nNew journal title: ");
+                        workingJournal._journalTitle = Console.ReadLine();
+                    }
                     workingJournal.SaveJournal();
                     Console.WriteLine("Journal saved!");
                     break;
@@ -78,7 +83,7 @@ class Program
 
                 // write entry
                 case 4:
-                    Console.WriteLine("New entry:");
+                    Console.WriteLine("\nNew entry:");
 
                     string workingPrompt = promptManager.GetPrompt();
                     string workingTime = DateTime.Now.ToShortDateString();

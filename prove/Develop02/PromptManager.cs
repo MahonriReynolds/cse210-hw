@@ -43,8 +43,12 @@ public class PromptManager
 
     public void RemovePrompt(int promptIndex)
     {
-        this._currentPrompts.RemoveAt(promptIndex);
-        SavePrompts();
+        if(this._currentPrompts.Count > promptIndex)
+        {
+            this._currentPrompts.RemoveAt(promptIndex);
+            SavePrompts();
+        }
+        
     }
 
 }
