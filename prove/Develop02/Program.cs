@@ -1,4 +1,18 @@
 
+/*
+For that last sweet sweet 7%:
+
+- Added several new prompts
+    - New Journal : Create a new journal without loading it into the working jorunal.
+    - Remove Entry : Remove entries from currently loaded journal.
+    - Add Prompt : Permenantly add a prompt to the prompt list.
+    - Remove Prompt : Permenantly remove a prompt from the prompt list.
+
+- Used JSON for persistent storage (Ended up using Json.NET (Newtonsoft))
+    - All journals are saved in JSON formatted files (with or without .json extension)
+    - Prompts are saved in prompts.json
+*/
+
 class Program
 {
     static void Main(string[] args)

@@ -5,6 +5,11 @@ public class Entry
     public string _prompt; 
     public string _response;
 
+    public Entry()
+    {
+        
+    }
+
     public void WriteEntry(string date, string prompt, string response)
     {
         _date = date;

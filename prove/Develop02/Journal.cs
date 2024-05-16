@@ -25,6 +25,10 @@ public class Journal
         {
             
         } 
+        catch  (NullReferenceException)
+        {
+
+        }
     }
 
     public void SaveJournal()
@@ -42,6 +46,10 @@ public class Journal
         {
             File.Create(this._storagePath).Close();
         }
+
+        this._currentEntries = [];
+        this.SaveJournal();
+        this.LoadJournal();
     }
 
     public string ConvertToString(bool numbered = false)
