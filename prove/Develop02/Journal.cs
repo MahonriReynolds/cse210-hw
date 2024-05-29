@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 public class Journal 
 {
     public string _journalTitle = "";
-    public List<Entry> _currentEntries = [];
+    public List<Entry> _currentEntries;
 
     [JsonIgnore]
     public string _storagePath;
