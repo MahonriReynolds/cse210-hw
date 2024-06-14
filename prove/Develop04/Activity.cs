@@ -38,14 +38,6 @@ public class Activity
         }
     }
 
-    public int Start()
-    {
-        Console.Clear();
-        Console.WriteLine($"Welcome to the {this._name}.");
-        Console.Write($"\n{this._description}\n");
-        return this._duration;
-    }
-
     public void End()
     {
         Console.Clear();
