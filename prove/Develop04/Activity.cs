@@ -9,7 +9,7 @@ public class Activity
     private int _duration;
     private List<Prompt> _promptsRand;
 
-    public Activity(string name, string description, List<string> prompts)
+    protected Activity(string name, string description, List<string> prompts)
     {
         this._name = name;
         this._description = description;
@@ -38,7 +38,7 @@ public class Activity
         }
     }
 
-    public void End()
+    protected void End()
     {
         Console.Clear();
         Console.WriteLine("\nWell done!");
@@ -51,7 +51,7 @@ public class Activity
         }
     }
 
-    public string PickPrompt()
+    protected string PickPrompt()
     {
         string tmp = "";
 
@@ -72,7 +72,7 @@ public class Activity
         return this._promptsRand[0].TryUse();
     }
 
-    public int GetDurationMiliseconds()
+    protected int GetDurationMiliseconds()
     {
         return this._duration * 1000;
     }
