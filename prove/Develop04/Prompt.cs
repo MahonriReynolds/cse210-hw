@@ -15,10 +15,9 @@ public class Prompt
     {
         if (this._used)
         {
-            // return false for can't use
             return "";
         }
-        // return true for can use
+        
         this._used = true;
         return this._content;
     }

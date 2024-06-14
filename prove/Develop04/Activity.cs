@@ -14,12 +14,11 @@ public class Activity
     {
         this._name = name;
         this._description = description;
-        
-        Console.WriteLine($"Welcome to the {this._name}.");
-        Console.Write($"\n{this._description}\n");
         do
         {
             Console.Clear();
+            Console.WriteLine($"Welcome to the {this._name}.");
+            Console.Write($"\n{this._description}\n");
             Console.Write("\nHow long, in seconds, would you like for your session? ");
         }while(!int.TryParse(Console.ReadLine(), out this._duration));
 
@@ -56,7 +55,12 @@ public class Activity
         Console.Clear();
         Console.WriteLine("\nWell done!");
         Console.Write($"\nYou have completed another {this._duration} seconds of the {this._name}.");
-        Thread.Sleep(4000);
+        Console.Write("\n. . . . . ");
+        for (int i = 0; i < 5; i++)
+        {
+            Console.Write("\b\b  \b\b");
+            Thread.Sleep(1000);
+        }
     }
 
     public string PickPrompt()

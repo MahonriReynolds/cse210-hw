@@ -2,6 +2,7 @@ using System;
 
 class Program
 {
+
     static void Main(string[] args)
     {
 
@@ -44,14 +45,22 @@ class Program
                     break;
 
                 case "2":
-                    Console.WriteLine("2");
+                    ReflectionActivity ra = new ReflectionActivity();
+                    ra.PromptReflection();
                     break;
                 
                 case "3":
-                    Console.WriteLine("3");
+                    ListingActivity la = new ListingActivity();
+                    la.PromptListing();
                     break;
                 
                 default:
+                    Console.Write("\nOption was in the list of approved options but was somehow still not valid. . . ");
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Console.Write("\b\b  \b\b");
+                        Thread.Sleep(1000);
+                    }
                     break;
             }
         }

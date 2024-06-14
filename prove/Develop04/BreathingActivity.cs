@@ -27,7 +27,6 @@ public class BreathingActivity : Activity
 
         Random rand = new Random();
         int time = 0;
-        int c = 5;
         string prompt = "";
         while (time <= base.GetDurationMiliseconds())
         {
@@ -38,15 +37,7 @@ public class BreathingActivity : Activity
 
             for (int j = 0; j < w; j++)
             {
-                if (frameArray[1][j] == " 0 ")
-                {
-                    frameArray[1][j] = " o ";
-                }
-            }
-
-            for (int j = 0; j < w; j++)
-            {
-                if (frameArray[h - 1][j] == " o ")
+                if (frameArray[h - 1][j] == " | ")
                 {
                     frameArray[h - 1][j] = @"\_/";
                 }
@@ -54,9 +45,8 @@ public class BreathingActivity : Activity
 
             for (int j = 0; j < w; j++)
             {
-                frameArray[0][j] = rand.Next(20) < 18 ? "   " : " 0 ";
+                frameArray[0][j] = rand.Next(15) < 14 ? "   " : " | ";
             }
-
 
             Console.Clear();
 
@@ -65,22 +55,17 @@ public class BreathingActivity : Activity
                 Console.WriteLine(string.Join("", row));
             }
 
-            if (time % 5000 == 0)
+    
+            if (time % 7000 == 0)
             {
-                prompt = $"{base.PickPrompt()}...";
-                c = 5;
+                prompt = $"{base.PickPrompt()}....";
             }
-
-            if (time % 1000 == 0)
-            {
-                prompt = $"{prompt}\b \b{c}";
-                c--;
-            }
+            prompt = $"{prompt}\b \b{6 - (time % 7000 / 1000)}";
 
             Console.WriteLine($"\n\n{prompt}");
             
-            Thread.Sleep(200);
-            time += 200;
+            Thread.Sleep(100);
+            time += 100;
         }
 
         base.End();
