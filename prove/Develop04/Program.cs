@@ -1,19 +1,9 @@
 
 
-
-
-
-
-
-
-
-// Added a different kind of animation / style to each activity.
+// Added a rain animation to the breathing activity that's supposed to be relaxing.
+// Used a stepped animation for the reflection activity.
+// Turned the listing activity into a notebook entry program. 
 // Made sure to not pick any repeat prompts until the entire list was used. 
-//
-
-
-
-
 
 using System;
 

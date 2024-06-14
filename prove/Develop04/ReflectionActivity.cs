@@ -89,6 +89,7 @@ public class ReflectionActivity : Activity
             Thread.Sleep(250);
             time += 250;
         }
+        base.End();
     }
 }
 
