@@ -1,3 +1,20 @@
+
+
+
+
+
+
+
+
+
+// Added a different kind of animation / style to each activity.
+// Made sure to not pick any repeat prompts until the entire list was used. 
+//
+
+
+
+
+
 using System;
 
 class Program
