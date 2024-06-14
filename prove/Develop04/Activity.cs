@@ -7,7 +7,6 @@ public class Activity
     private string _name;
     private string _description;
     private int _duration;
-    private List<Prompt> _prompts;
     private List<Prompt> _promptsRand;
 
     public Activity(string name, string description, List<string> prompts)
@@ -22,13 +21,10 @@ public class Activity
             Console.Write("\nHow long, in seconds, would you like for your session? ");
         }while(!int.TryParse(Console.ReadLine(), out this._duration));
 
-
-        this._prompts = [];
         this._promptsRand = [];
         foreach (string prompt in prompts)
         {
             Prompt newPrompt = new Prompt(prompt);
-            this._prompts.Add(newPrompt);
             this._promptsRand.Add(newPrompt);
         }
 
