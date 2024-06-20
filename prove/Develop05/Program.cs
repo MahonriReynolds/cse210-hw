@@ -1,41 +1,32 @@
-using System.IO;
-using System.Text.Json;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
+        UI ui = new UI();
 
-        SimpleGoal g1 = new SimpleGoal("test", "testing", 0);
+        bool run = true;
+        while (run)
+        {
+            int selection = ui.DisplayMainMenu();
+            string[] saves = Directory.GetFiles("./saves/");
 
-        string jsonString = JsonSerializer.Serialize(g1);
-        Console.WriteLine(jsonString);
+            string gamePath = "./saves/default.txt";
+            switch (selection)
+            {
+                case 0:
+                    gamePath = "";
+                    break;
+                case 1:
+                    gamePath = saves[ui.DisplaySavesMenu(saves)];
+                    break;
+                case 2:
+                    run = false;
+                    break;
+            }
 
-        // GoalRecord gr = new GoalRecord();
-        // UI ui = new UI();
+            ui.DisplayHome(new GoalRecord(gamePath));
 
-        // bool run = true;
-        // while (run)
-        // {
-        //     int selection = ui.DisplayMainMenu();
-
-        //     string[] saves = Directory.GetFiles("./saves/");
-            
-
-        //     switch (selection)
-        //     {
-        //         case 0:
-        //             List<Goal> blankGoals = [];
-        //             ui.DisplayHome(blankGoals);
-        //             break;
-        //         case 1:
-        //             List<Goal> goals = gr.GetGoals(saves[ui.DisplaySavesMenu(saves)]);
-        //             ui.DisplayHome(goals);
-        //             break;
-        //         case 2:
-        //             run = false;
-        //             break;
-        //     }
-        // }
+        }
     }
 }

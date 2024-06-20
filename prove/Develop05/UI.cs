@@ -12,7 +12,7 @@ public class UI
         Console.WriteLine("                                                               ");
 
         string[] options = ["New Game", "Load Game", "Quit"];
-        int choice = GetUIChoice(5, 8, 1, false, options);
+        int choice = GetUIChoice(5, 8, 1, false, options, null);
         return choice;
     }
 
@@ -26,11 +26,11 @@ public class UI
         Console.WriteLine(" |____/  \\__,_|  \\_/  \\___| \\__,_|     \\____| \\__,_||_| |_| |_| \\___||___/");
         Console.WriteLine("                                                                                 ");
 
-        int choice = GetUIChoice(5, 8, 1, false, saves);
+        int choice = GetUIChoice(5, 8, 1, false, saves, null);
         return choice;
     }
 
-    public int DisplayHome(List<Goal> goals)
+    public int DisplayHome(GoalRecord gr)
     {
         Console.Clear(); 
         Console.WriteLine("  _   _                            ");
@@ -40,18 +40,16 @@ public class UI
         Console.WriteLine(" |_| |_| \\___/ |_| |_| |_| \\___| ");
         Console.WriteLine("                                   ");
         
-        string[] goalStrings = goals.Select(obj => $"{obj}").ToArray();
-        int choice = GetUIChoice(5, 8, 1, false, goalStrings);
+        string[] goalStrings = gr.GetGoals().Select(obj => $"{obj}").ToArray();
+        int choice = GetUIChoice(5, 8, 1, false, goalStrings, gr.GetLvl());
         return 0;
     }
 
-
-
-
-    private int GetUIChoice(int x, int y, int columns, bool canCancel, string[] options)
+    private int GetUIChoice(int x, int y, int columns, bool canCancel, string[] options, string footerMessage)
     {
         // Found this method here: https://stackoverflow.com/questions/46908148/controlling-menu-with-the-arrow-keys-and-enter.
         // Not sure how to document that. 
+        // Quite a bit was modified as well tho!
 
         const int spacingPerLine = 14;
 
@@ -77,6 +75,12 @@ public class UI
                 Console.Write(options[i]);
 
                 Console.ResetColor();
+            }
+
+            if (footerMessage != null)
+            {
+                Console.SetCursorPosition(0, startY + options.Length / optionsPerLine + 2);
+                Console.WriteLine(footerMessage);
             }
 
             key = Console.ReadKey(true).Key;

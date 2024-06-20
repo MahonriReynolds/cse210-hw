@@ -1,22 +1,22 @@
-using System.Text.Json.Serialization;
 
 public class SimpleGoal:Goal
 {
-    [JsonInclude]
-    private string _type;
-    [JsonInclude]
     private bool _completed;
 
     public SimpleGoal(string name, string description, int points)
     : base(name, description, points)
     {
-        this._type = "SimpleGoal";
         this._completed = false;
     }
 
     public void Complete()
     {
         this._completed = true;
+    }
+
+    public override string StringStorage()
+    {
+        return $"SimpleGoal|{base.ToString()}";
     }
 
     public override string ToString()

@@ -1,20 +1,13 @@
-using System.Text.Json.Serialization;
 
 public class ChecklistGoal:Goal
 {
-    [JsonInclude]
-    private string _type;
-    [JsonInclude]
     private int _iterations;
-    [JsonInclude]
     private int _progress;
-    [JsonInclude]
     private int _bonus;
 
     public ChecklistGoal(string name, string description, int points, int iterations, int bonus)
     : base(name, description, points)
     {
-        this._type = "ChecklistGoal";
         this._iterations = iterations;
         this._progress = 0;
         this._bonus = bonus;
@@ -38,6 +31,11 @@ public class ChecklistGoal:Goal
         return this._bonus;
     }
 
+    public override string StringStorage()
+    {
+        return $"ChecklistGoal|{base.ToString()}|{this._iterations}|{this._bonus}";
+    }
+
     public override string ToString()
     {
         if (this._progress >= this._iterations)
@@ -47,6 +45,7 @@ public class ChecklistGoal:Goal
         return $"[ ] {base.ToString()} -- {this._progress}/{this._iterations}";
         
     }
+
 }
 
 

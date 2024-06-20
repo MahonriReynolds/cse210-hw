@@ -21,9 +21,11 @@ public abstract class Goal
         return this._points;
     }
 
+    public abstract string StringStorage();
+
     public override string ToString()
     {
-        return $"{this._name} ({this._description})";
+        return $"{this._name} | {this._description} | {this._points}";
     }
 }
 
