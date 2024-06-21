@@ -10,13 +10,23 @@ class Program
         {
             int saveChoice = ui.DisplayMainMenu();
             string[] saves = Directory.GetFiles("./saves/");
+            if (saves.Length < 1)
+            {
+                saveChoice = 0;
+            }
 
             string gamePath = "./saves/default.txt";
             switch (saveChoice)
             {
                 case 0:
-                    string saveName = ui.DisplayNewSave();
-                    gamePath = $"./saves/{saveName}.txt";
+                    string saveName;
+                    do
+                    {
+                        saveName = ui.DisplayNewSave();
+                        gamePath = $"./saves/{saveName}.txt";
+
+                    }while (File.Exists(gamePath) || string.IsNullOrWhiteSpace(saveName));
+                    
                     File.Create(gamePath).Dispose();
                     using (StreamWriter outputFile = new StreamWriter(gamePath))
                     {
@@ -31,10 +41,9 @@ class Program
                     break;
             }
 
-            GoalRecord gr = new GoalRecord(gamePath);
-
             if (run)
             {
+                GoalRecord gr = new GoalRecord(gamePath);
                 int goalChoice;
                 do
                 {

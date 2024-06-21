@@ -12,7 +12,7 @@ public class UI
         Console.WriteLine(@"                                                          ");
 
         string[] options = ["New Game", "Load Game", "Quit"];
-        int choice = GetUIChoice(5, 8, 1, false, options, "Λ V to navigate\nEnter to select");
+        int choice = GetChoice(5, 8, options, "Λ V to navigate\nEnter to select");
         return choice;
     }
 
@@ -26,7 +26,7 @@ public class UI
         Console.WriteLine(@" |____/  \__,_|  \_/  \___| \__,_|     \____| \__,_||_| |_| |_| \___||___/");
         Console.WriteLine(@"                                                                          ");
 
-        int choice = GetUIChoice(5, 8, 1, false, saves, "Λ V to navigate\nEnter to select\n\n* Saves can be found in ./saves/");
+        int choice = GetChoice(5, 8, saves.Select(Path.GetFileNameWithoutExtension).ToArray(), "Λ V to navigate\nEnter to select\n\n* Saves can be found in ./saves/");
         return choice;
     }
 
@@ -40,7 +40,7 @@ public class UI
         Console.WriteLine(@" |_| \_| \___|  \_/\_/      |____/  \__,_|  \_/  \___|");
         Console.WriteLine(@"                                                      ");
 
-        string newSavePath = GetTextInput(5, 8, 1, false, ["New save name\t>"], "Enter to submit form\n\n* Saves can be found in ./saves/")[0];
+        string newSavePath = GetInput(5, 8, ["New save name\t>"], "Enter to submit form\n\n* Saves can be found in ./saves/")[0];
         return newSavePath;
     }
 
@@ -57,7 +57,7 @@ public class UI
         List<string> goalStrings = ["Main Menu", "New Goal"];
         goalStrings.AddRange(gr.GetGoals().Select(obj => $"{obj}"));
 
-        int choice = GetUIChoice(5, 8, 1, false, goalStrings.ToArray(), $"{gr.GetLvl()}\n\nΛ V to navigate\nEnter to select");
+        int choice = GetChoice(5, 8, goalStrings.ToArray(), $"{gr.GetLvl()}\n\nΛ V to navigate\nEnter to select");
         return choice-2;
     }
 
@@ -74,7 +74,7 @@ public class UI
         Console.WriteLine($"\n\n{goal}");
         
         string[] goalOptions = ["Complete", "Delete"];
-        int choice = GetUIChoice(5, 11, 1, true, goalOptions, "Λ V to navigate\nEnter to select");
+        int choice = GetChoice(5, 11, goalOptions, "Λ V to navigate\nEnter to select");
 
         return choice;
     }
@@ -90,7 +90,7 @@ public class UI
         Console.WriteLine(@" |_| \_| \___|  \_/\_/       \____| \___/  \__,_||_|");
         Console.WriteLine(@"                                                    ");
         
-        int goalType = GetUIChoice(5, 8, 1, true, ["Simple Goal", "Eternal Goal", "Checklist Goal"], "Λ V to navigate form\nEnter to submit form");
+        int goalType = GetChoice(5, 8, ["Simple Goal", "Eternal Goal", "Checklist Goal"], "Λ V to navigate\nEnter to select");
         List<string> goalInfoFields = [];
         List<string> newGoalInfo = [];
         switch (goalType)
@@ -109,49 +109,49 @@ public class UI
                 break;
         }
 
-        newGoalInfo.AddRange(GetTextInput(5, 8, 1, true, goalInfoFields.ToArray(), "Λ V to navigate\nEnter to select"));
-        if (goalType == 2)
+        do
         {
-            newGoalInfo.Add("0");
-        }
+            newGoalInfo = newGoalInfo[0..1];
+            newGoalInfo.AddRange(GetInput(5, 8, goalInfoFields.ToArray(), "Λ V to navigate form\nEnter to submit form"));
+            if (goalType == 2)
+            {
+                newGoalInfo.Add("0");
+            }
+
+        }while (!ValidateGoalArray(newGoalInfo.ToArray()));
+
         return string.Join("|", newGoalInfo);
     }
 
-    private int GetUIChoice(int x, int y, int columns, bool canCancel, string[] options, string footerMessage)
+    private int GetChoice(int x, int y, string[] options, string footerMessage=null)
     {
         // Found this method here: https://stackoverflow.com/questions/46908148/controlling-menu-with-the-arrow-keys-and-enter.
         // Not sure how to document that. 
         // Quite a bit was modified as well tho!
 
-        const int spacingPerLine = 14;
-
         int startX = x;
         int startY = y;
-        int optionsPerLine = columns;
-        
-        int currentSelection = 0;
+        int selection = 0;
 
         ConsoleKey key;
-
         Console.CursorVisible = false;
 
         do
         {
             for (int i = 0; i < options.Length; i++)
             {
-                Console.SetCursorPosition(startX + i % optionsPerLine * spacingPerLine, startY + i / optionsPerLine);
+                Console.SetCursorPosition(startX, startY + i);
 
-                if (i == currentSelection)
+                if (i == selection)
                     Console.ForegroundColor = ConsoleColor.Green;
-
+                
                 Console.Write(options[i]);
-
                 Console.ResetColor();
             }
 
             if (footerMessage != null)
             {
-                Console.SetCursorPosition(0, startY + options.Length / optionsPerLine + 2);
+                Console.SetCursorPosition(0, startY + options.Length + 1);
                 Console.WriteLine(footerMessage);
             }
 
@@ -159,121 +159,104 @@ public class UI
 
             switch (key)
             {
-                case ConsoleKey.LeftArrow:
-                    if (currentSelection % optionsPerLine > 0)
-                        currentSelection--;
-                    break;
-                case ConsoleKey.RightArrow:
-                    if (currentSelection % optionsPerLine < optionsPerLine - 1)
-                        currentSelection++;
-                    break;
                 case ConsoleKey.UpArrow:
-                    if (currentSelection >= optionsPerLine)
-                        currentSelection -= optionsPerLine;
+                    if (selection > 0)
+                        selection -= 1;
                     break;
                 case ConsoleKey.DownArrow:
-                    if (currentSelection + optionsPerLine < options.Length)
-                        currentSelection += optionsPerLine;
-                    break;
-                case ConsoleKey.Escape:
-                    if (canCancel)
-                        return -1;
+                    if (selection < options.Length - 1)
+                        selection += 1;
                     break;
             }
 
-            Console.SetCursorPosition(0, startY + options.Length / optionsPerLine + 1);
+            // Console.SetCursorPosition(0, startY + options.Length / 2);
         } while (key != ConsoleKey.Enter);
 
         Console.CursorVisible = true;
+        Console.ResetColor();
 
-        return currentSelection;
+        return selection;
     }
 
-    private string[] GetTextInput(int x, int y, int columns, bool canCancel, string[] prompts, string footerMessage)
+    private string[] GetInput(int x, int y, string[] prompts, string footerMessage=null)
     {
-        const int spacingPerLine = 14;
         int startX = x;
         int startY = y;
-        int promptsPerLine = columns;
-        int currentPrompt = 0;
+        int field = 0;
 
-        List<string> responses = new List<string>();
-        for (int i = 0; i < prompts.Length; i++)
-        {
-            responses.Add("");
-        }
+        string[] responses = new string[prompts.Length];
 
-        int maxLength = 50;
-        ConsoleKeyInfo keyInfo;
-
-        Console.Clear();
+        ConsoleKeyInfo key;
         Console.CursorVisible = false;
 
         do
         {
             Console.Clear();
-
             for (int i = 0; i < prompts.Length; i++)
             {
-                Console.SetCursorPosition(startX + i % promptsPerLine * spacingPerLine, startY + i / promptsPerLine);
+                Console.SetCursorPosition(startX, startY + i);
 
-                if (i == currentPrompt)
-                {
+                if (i == field)
                     Console.ForegroundColor = ConsoleColor.Green;
-                }
-                else
-                {
-                    Console.ResetColor();
-                }
-
+                
                 Console.Write(prompts[i] + " ");
+
                 if (!string.IsNullOrEmpty(responses[i]))
                 {
                     Console.Write(responses[i]);
                 }
-                Console.WriteLine();
+
+                Console.ResetColor();
             }
 
             if (footerMessage != null)
             {
-                Console.SetCursorPosition(0, startY + prompts.Length / promptsPerLine + 2);
+                Console.SetCursorPosition(0, startY + prompts.Length + 1);
                 Console.WriteLine(footerMessage);
             }
 
-            keyInfo = Console.ReadKey(intercept: true);
+            key = Console.ReadKey(intercept: true);
 
-            switch (keyInfo.Key)
+            switch (key.Key)
             {
                 case ConsoleKey.UpArrow:
-                    currentPrompt = (currentPrompt > 0) ? currentPrompt - 1 : prompts.Length - 1;
-                    break;
-                case ConsoleKey.DownArrow:
-                    currentPrompt = (currentPrompt + 1) % prompts.Length;
-                    break;
-                case ConsoleKey.Enter:
-                    Console.SetCursorPosition(0, startY + prompts.Length / promptsPerLine + 1);
-                    Console.CursorVisible = true;
-                    return responses.ToArray();
-                case ConsoleKey.Backspace:
-                    if (!string.IsNullOrEmpty(responses[currentPrompt]))
+                    if (field > 0)
                     {
-                        responses[currentPrompt] = responses[currentPrompt].Remove(responses[currentPrompt].Length - 1);
+                        field -= 1;
                     }
                     break;
-                case ConsoleKey.Escape:
-                    if (canCancel)
+                case ConsoleKey.DownArrow:
+                    if (field < prompts.Length - 1)
                     {
-                        Console.CursorVisible = true;
-                        return null;
+                        field += 1;
+                    }
+                    break;
+                case ConsoleKey.Backspace:
+                    if (!string.IsNullOrEmpty(responses[field]))
+                    {
+                        responses[field] = responses[field][..^1];
                     }
                     break;
                 default:
-                    if ((char.IsLetterOrDigit(keyInfo.KeyChar) || keyInfo.KeyChar == ' ') && responses[currentPrompt].Length < maxLength)
-                    {
-                        responses[currentPrompt] += keyInfo.KeyChar.ToString().ToLower();
-                    }
+                    responses[field] += key.KeyChar;
                     break;
             }
-        } while (true);
+        } while (key.Key != ConsoleKey.Enter);
+
+        Console.CursorVisible = true;
+        Console.ResetColor();
+        return responses;
+    }
+
+    private bool ValidateGoalArray(string[] goalAray)
+    {
+        for (int i = 3; i < goalAray.Length; i++)
+        {
+            if (!int.TryParse(goalAray[i], out _))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
