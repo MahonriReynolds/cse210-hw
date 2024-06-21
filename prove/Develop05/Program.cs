@@ -1,4 +1,7 @@
 
+// Found a cool console navigation method and used a couple variations of it 
+// to get that last 7%
+
 class Program
 {
     static void Main()
