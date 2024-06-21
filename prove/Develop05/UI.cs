@@ -12,7 +12,7 @@ public class UI
         Console.WriteLine(@"                                                          ");
 
         string[] options = ["New Game", "Load Game", "Quit"];
-        int choice = GetUIChoice(5, 8, 1, false, options, null);
+        int choice = GetUIChoice(5, 8, 1, false, options, "Λ V to navigate\nEnter to select");
         return choice;
     }
 
@@ -26,7 +26,7 @@ public class UI
         Console.WriteLine(@" |____/  \__,_|  \_/  \___| \__,_|     \____| \__,_||_| |_| |_| \___||___/");
         Console.WriteLine(@"                                                                          ");
 
-        int choice = GetUIChoice(5, 8, 1, false, saves, null);
+        int choice = GetUIChoice(5, 8, 1, false, saves, "Λ V to navigate\nEnter to select\n\n* Saves can be found in ./saves/");
         return choice;
     }
 
@@ -40,7 +40,7 @@ public class UI
         Console.WriteLine(@" |_| \_| \___|  \_/\_/      |____/  \__,_|  \_/  \___|");
         Console.WriteLine(@"                                                      ");
 
-        string newSavePath = GetTextInput(5, 8, 1, false, ["New save name\t>"], "\n*Saves can be found in ./saves/")[0];
+        string newSavePath = GetTextInput(5, 8, 1, false, ["New save name\t>"], "Enter to submit form\n\n* Saves can be found in ./saves/")[0];
         return newSavePath;
     }
 
@@ -57,7 +57,7 @@ public class UI
         List<string> goalStrings = ["Main Menu", "New Goal"];
         goalStrings.AddRange(gr.GetGoals().Select(obj => $"{obj}"));
 
-        int choice = GetUIChoice(5, 8, 1, false, goalStrings.ToArray(), gr.GetLvl());
+        int choice = GetUIChoice(5, 8, 1, false, goalStrings.ToArray(), $"{gr.GetLvl()}\n\nΛ V to navigate\nEnter to select");
         return choice-2;
     }
 
@@ -74,7 +74,7 @@ public class UI
         Console.WriteLine($"\n\n{goal}");
         
         string[] goalOptions = ["Complete", "Delete"];
-        int choice = GetUIChoice(5, 11, 1, true, goalOptions, null);
+        int choice = GetUIChoice(5, 11, 1, true, goalOptions, "Λ V to navigate\nEnter to select");
 
         return choice;
     }
@@ -90,7 +90,7 @@ public class UI
         Console.WriteLine(@" |_| \_| \___|  \_/\_/       \____| \___/  \__,_||_|");
         Console.WriteLine(@"                                                    ");
         
-        int goalType = GetUIChoice(5, 8, 1, true, ["Simple Goal", "Eternal Goal", "Checklist Goal"], null);
+        int goalType = GetUIChoice(5, 8, 1, true, ["Simple Goal", "Eternal Goal", "Checklist Goal"], "Λ V to navigate form\nEnter to submit form");
         List<string> goalInfoFields = [];
         List<string> newGoalInfo = [];
         switch (goalType)
@@ -109,7 +109,7 @@ public class UI
                 break;
         }
 
-        newGoalInfo.AddRange(GetTextInput(5, 8, 1, true, goalInfoFields.ToArray(), null));
+        newGoalInfo.AddRange(GetTextInput(5, 8, 1, true, goalInfoFields.ToArray(), "Λ V to navigate\nEnter to select"));
         if (goalType == 2)
         {
             newGoalInfo.Add("0");
