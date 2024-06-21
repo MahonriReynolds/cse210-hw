@@ -1,12 +1,8 @@
-using System.Text.Json.Serialization;
 
 public abstract class Goal
 {
-    [JsonInclude]
     private string _name;
-    [JsonInclude]
     private string _description;
-    [JsonInclude]
     private int _points;
     
     public Goal(string name, string description, int points)
@@ -21,7 +17,10 @@ public abstract class Goal
         return this._points;
     }
 
-    public abstract string StringStorage();
+    public virtual string ToStorage()
+    {
+        return $"{this._name}|{this._description}|{this._points}";
+    }
 
     public virtual void Complete()
     {
@@ -30,7 +29,7 @@ public abstract class Goal
 
     public override string ToString()
     {
-        return $"{this._name} | {this._description} | {this._points}";
+        return $"{this._name}: {this._description} ({this._points} points)";
     }
 }
 

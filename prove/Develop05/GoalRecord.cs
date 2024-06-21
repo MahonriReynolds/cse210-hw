@@ -30,7 +30,7 @@ public class GoalRecord
             case "EternalGoal":
                 return new EternalGoal(parts[1], parts[2], int.Parse(parts[3]));
             case "ChecklistGoal":
-                return new ChecklistGoal(parts[1], parts[2], int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]));
+                return new ChecklistGoal(parts[1], parts[2], int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]), int.Parse(parts[6]));
         }
         return new EternalGoal("", "", 0);
     }
@@ -47,7 +47,7 @@ public class GoalRecord
             outputFile.WriteLine(this._totalPoints);
             foreach (Goal goal in this._goalList)
             {
-                outputFile.WriteLine(goal.StringStorage());
+                outputFile.WriteLine(goal.ToStorage());
             }
         }
     }
@@ -59,7 +59,7 @@ public class GoalRecord
 
         double multiplier = 1.25;
         int currentLevel = 1;
-        int pointsForNextLevel = 100;
+        int pointsForNextLevel = 125;
         int pointsInCurrentLevel = totalPoints;
 
         while (pointsInCurrentLevel >= pointsForNextLevel)

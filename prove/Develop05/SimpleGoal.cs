@@ -14,9 +14,9 @@ public class SimpleGoal:Goal
         this._completed = true;
     }
 
-    public override string StringStorage()
+    public override string ToStorage()
     {
-        return $"SimpleGoal|{base.ToString()}";
+        return $"SimpleGoal|{base.ToStorage()}";
     }
 
     public override string ToString()

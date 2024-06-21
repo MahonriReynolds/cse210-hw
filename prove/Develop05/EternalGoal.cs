@@ -7,9 +7,9 @@ public class EternalGoal:Goal
     {
     }
 
-    public override string StringStorage()
+    public override string ToStorage()
     {
-        return $"EternalGoal|{base.ToString()}";
+        return $"EternalGoal|{base.ToStorage()}";
     }
 
     public override string ToString()

@@ -1,6 +1,4 @@
 
-using System.ComponentModel;
-
 public class UI
 {
     public int DisplayMainMenu()
@@ -112,6 +110,10 @@ public class UI
         }
 
         newGoalInfo.AddRange(GetTextInput(5, 8, 1, true, goalInfoFields.ToArray(), null));
+        if (goalType == 2)
+        {
+            newGoalInfo.Add("0");
+        }
         return string.Join("|", newGoalInfo);
     }
 
@@ -195,18 +197,17 @@ public class UI
         int promptsPerLine = columns;
         int currentPrompt = 0;
 
-        // Initialize responses with empty strings corresponding to each prompt
         List<string> responses = new List<string>();
         for (int i = 0; i < prompts.Length; i++)
         {
             responses.Add("");
         }
 
-        int maxLength = 50; // Assuming max length for input is 50 characters
+        int maxLength = 50;
         ConsoleKeyInfo keyInfo;
 
         Console.Clear();
-        Console.CursorVisible = false; // Hide the cursor initially
+        Console.CursorVisible = false;
 
         do
         {
@@ -251,8 +252,7 @@ public class UI
                     break;
                 case ConsoleKey.Enter:
                     Console.SetCursorPosition(0, startY + prompts.Length / promptsPerLine + 1);
-                    Console.CursorVisible = true; // Show the cursor again before returning
-                    Console.WriteLine("Responses submitted.");
+                    Console.CursorVisible = true;
                     return responses.ToArray();
                 case ConsoleKey.Backspace:
                     if (!string.IsNullOrEmpty(responses[currentPrompt]))
@@ -263,23 +263,17 @@ public class UI
                 case ConsoleKey.Escape:
                     if (canCancel)
                     {
-                        Console.CursorVisible = true; // Show the cursor again before returning
-                        return null; // Indicate cancellation
+                        Console.CursorVisible = true;
+                        return null;
                     }
                     break;
                 default:
-                    // Handle alphanumeric keys and space
                     if ((char.IsLetterOrDigit(keyInfo.KeyChar) || keyInfo.KeyChar == ' ') && responses[currentPrompt].Length < maxLength)
                     {
                         responses[currentPrompt] += keyInfo.KeyChar.ToString().ToLower();
                     }
                     break;
             }
-
         } while (true);
     }
-
-
-
-
 }
