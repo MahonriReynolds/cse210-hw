@@ -1,5 +1,2 @@
-438
-SimpleGoal|test | testing | 0
-EternalGoal|test | testing | 0
-ChecklistGoal|test | testing | 0|0|0
-ChecklistGoal|test | testing | 0|5|0
+7005524
+ChecklistGoal|test checklist goal     |     test checklist description     | 1|5|1000000

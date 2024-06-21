@@ -13,12 +13,12 @@ public class ChecklistGoal:Goal
         this._bonus = bonus;
     }
 
-    public void Complete()
+    public override void Complete()
     {
         this._progress++;
-        if (this._progress >= this._iterations)
+        if (this._progress > this._iterations)
         {
-            this._progress = this._iterations;
+            this._progress = 1;
         }
     }
 

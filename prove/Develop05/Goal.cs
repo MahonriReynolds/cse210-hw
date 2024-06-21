@@ -23,6 +23,11 @@ public abstract class Goal
 
     public abstract string StringStorage();
 
+    public virtual void Complete()
+    {
+
+    }
+
     public override string ToString()
     {
         return $"{this._name} | {this._description} | {this._points}";

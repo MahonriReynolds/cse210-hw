@@ -40,7 +40,7 @@ public class GoalRecord
         return this._goalList;
     }
 
-    public void SaveGame(List<Goal> goalList)
+    public void SaveGame()
     {
         using (StreamWriter outputFile = new StreamWriter(this._filePath))
         {
@@ -87,9 +87,19 @@ public class GoalRecord
         this._goalList.RemoveAt(idx);
     }
 
-    public void AddGoal(Goal newGoal)
+    public void AddGoal(string newGoalString)
     {
-        this._goalList.Add(newGoal);
+        this._goalList.Add(this.BuildGoal(newGoalString));
+    }
+
+    public Goal GrabGoal(int goalIdx)
+    {
+        return this._goalList[goalIdx];
+    }
+
+    public void GainPoints(int points)
+    {
+        this._totalPoints += points;
     }
 }
 

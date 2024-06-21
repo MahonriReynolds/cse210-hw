@@ -9,7 +9,7 @@ public class SimpleGoal:Goal
         this._completed = false;
     }
 
-    public void Complete()
+    public override void Complete()
     {
         this._completed = true;
     }
