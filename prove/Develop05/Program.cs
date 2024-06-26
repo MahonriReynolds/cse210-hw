@@ -13,7 +13,7 @@ class Program
         {
             int saveChoice = ui.DisplayMainMenu();
             string[] saves = Directory.GetFiles("./saves/");
-            if (saves.Length < 1)
+            if (saves.Length < 1 && saveChoice == 1)
             {
                 saveChoice = 0;
             }

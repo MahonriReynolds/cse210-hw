@@ -143,12 +143,18 @@ public class UI
                 Console.SetCursorPosition(startX, startY + i);
 
                 if (i == selection)
+                {
                     Console.ForegroundColor = ConsoleColor.Green;
-                
-                Console.Write(options[i]);
-                Console.ResetColor();
+                    Console.Write($"> {options[i]}");
+                }
+                else
+                {
+                    Console.ResetColor();
+                    Console.Write($"{options[i]}  ");
+                }
             }
 
+            Console.ResetColor();
             if (footerMessage != null)
             {
                 Console.SetCursorPosition(0, startY + options.Length + 1);
