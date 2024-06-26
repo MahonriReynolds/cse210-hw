@@ -63,8 +63,7 @@ class Program
                         {
                             case 0:
                                 Goal currGoal = gr.GrabGoal(goalChoice);
-                                currGoal.Complete();
-                                gr.GainPoints(currGoal.Score());
+                                gr.GainPoints(currGoal.CheckOff());
                                 break;
                             case 1:
                                 gr.RemoveGoal(goalChoice);

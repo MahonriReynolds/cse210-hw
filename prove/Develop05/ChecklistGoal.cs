@@ -13,22 +13,18 @@ public class ChecklistGoal:Goal
         this._bonus = bonus;
     }
 
-    public override void Complete()
+    public override int CheckOff()
     {
         this._progress++;
-        if (this._progress > this._iterations)
-        {
-            this._progress = 1;
-        }
-    }
-
-    public override int Score()
-    {
         if (this._progress < this._iterations)
         {
-            return base.Score();
+            return base.CheckOff();
         }
-        return this._bonus;
+        else if (this._progress == this._iterations)
+        {
+            return this._bonus;
+        }
+        return 0;
     }
 
     public override string ToStorage()
@@ -40,7 +36,7 @@ public class ChecklistGoal:Goal
     {
         if (this._progress >= this._iterations)
         {
-            return $"[X] {base.ToString()} -- {this._progress}/{this._iterations} to {this._bonus} bonus points";
+            return $"[X] {base.ToString()} -- {this._iterations}/{this._iterations} to {this._bonus} bonus points";
         }
         return $"[ ] {base.ToString()} -- {this._progress}/{this._iterations} to {this._bonus} bonus points";
         

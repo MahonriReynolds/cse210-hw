@@ -111,14 +111,20 @@ public class UI
 
         do
         {
-            newGoalInfo = newGoalInfo[0..1];
+            newGoalInfo = newGoalInfo[..1];
             newGoalInfo.AddRange(GetInput(5, 8, goalInfoFields.ToArray(), "Λ V to navigate form\nEnter to submit form"));
+            
             if (goalType == 2)
             {
                 newGoalInfo.Add("0");
             }
 
         }while (!ValidateGoalArray(newGoalInfo.ToArray()));
+        
+        if (goalType == 0)
+        {
+            newGoalInfo.Add("false");
+        }
 
         return string.Join("|", newGoalInfo);
     }

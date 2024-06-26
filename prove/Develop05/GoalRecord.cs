@@ -26,7 +26,7 @@ public class GoalRecord
         switch (type)
         {
             case "SimpleGoal":
-                return new SimpleGoal(parts[1], parts[2], int.Parse(parts[3]));
+                return new SimpleGoal(parts[1], parts[2], int.Parse(parts[3]), bool.Parse(parts[4]));
             case "EternalGoal":
                 return new EternalGoal(parts[1], parts[2], int.Parse(parts[3]));
             case "ChecklistGoal":

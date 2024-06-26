@@ -12,7 +12,7 @@ public abstract class Goal
         this._points = points;
     }
 
-    public virtual int Score()
+    public virtual int CheckOff()
     {
         return this._points;
     }
@@ -20,11 +20,6 @@ public abstract class Goal
     public virtual string ToStorage()
     {
         return $"{this._name}|{this._description}|{this._points}";
-    }
-
-    public virtual void Complete()
-    {
-
     }
 
     public override string ToString()
