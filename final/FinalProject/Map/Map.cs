@@ -1,15 +1,15 @@
 
 public class Map
 {
+    private int _scale;
     private List<Tile> _tiles;
 
-    public Map()
+    public Map(int scale)
     {
+        this._scale = scale;
         this._tiles = [];
-        for (int i = 0; i < 10; i++)
-        {
-            this.AddTile(i, i);
-        }
+        this.AddTile(0, -1);
+        this.AddTile(1, 0);
     }
 
     private void AddTile(int x, int verdure)
@@ -21,7 +21,12 @@ public class Map
     {
         if (right == this._tiles.Count)
         {
-            this.AddTile(right, right);
+            this.AddTile(right, right/this._scale);
+        }
+
+        if (right == -1)
+        {
+            right = this._tiles.Count - 1;
         }
 
         List<Tuple<int, char[,]>> tileData = [];
@@ -34,7 +39,6 @@ public class Map
 
         return tileData;
     }
-
-    
+ 
 }
 

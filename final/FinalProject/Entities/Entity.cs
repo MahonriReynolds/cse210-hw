@@ -10,9 +10,10 @@ public abstract class Entity
 
     private bool _isAlive;
 
+    // [stationary, right dash, end dash, left dash]
     private char[] _model;
 
-    public Entity(char[] model, int maxHealth, bool isAlive=true, int attack=1, int defense=1)
+    public Entity(char[] model, int maxHealth, bool isAlive=true, int attack=1, int defense=0)
     {
         this._model = model;
 
@@ -44,6 +45,11 @@ public abstract class Entity
         {
             this._xPos = 0;
         }
+    }
+
+    public float GetHealth()
+    {
+        return (float)this._health / this._maxHealth;
     }
 
     public int Locate()
@@ -79,9 +85,16 @@ public abstract class Entity
         return this._attack;
     }
 
-    public char[] AnimateAttack()
+    public char[] GetAttackSequence(int direction)
     {
-        return this._model;
+        // direction should be either -1 for left or 1 for right
+        // if right, return the right attack animation sequence
+        // else return the left sequence
+        if (direction == -1)
+        {
+            return [this._model[3], this._model[2], this._model[3], this._model[0]];
+        }
+        return [this._model[1], this._model[2], this._model[1], this._model[0]];
     }
 
     public char Show()

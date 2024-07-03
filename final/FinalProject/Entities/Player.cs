@@ -1,28 +1,24 @@
 
-
 public class Player:Entity
 {
-    private List<Item> _inventory;
 
-    public Player(char[] model, int maxHealth)
+    private int _stamina;
+    private int _maxStamina;
+
+    public Player(char[] model, int maxHealth, int maxStamina)
     : base (model, maxHealth)
     {
-        this._inventory = [];
+        this._maxStamina = maxStamina;
+        this._stamina = this._maxStamina;
     }
 
-    public void PickUpItem(Item newItem)
+    public int CheckStamina()
     {
-        this._inventory.Add(newItem);
+        return this._stamina;
     }
 
-    public string[] CheckInventory()
+    public void Rest()
     {
-        List<string> itemDescriptions = [];
-        foreach (Item item in this._inventory)
-        {
-            itemDescriptions.Add(item.Describe());
-        }
-        return itemDescriptions.ToArray();
+        this._stamina += 1;
     }
-
 }

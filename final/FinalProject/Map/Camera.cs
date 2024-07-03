@@ -9,8 +9,6 @@ public class Camera
 
     public Camera(int width, Map map, Player player)
     {
-        Console.CursorVisible = false;
-
         this._width = width;
         this._center = 0;
 
@@ -18,58 +16,120 @@ public class Camera
         this._player = player;
     }
 
-    public void Display()
-{
-    Console.Clear();
-
-    // Calculate the active tile based on the player's position
-    int playerPos = this._player.Locate();
-
-    // Calculate the active tile index
-    this._center = playerPos / 30;
-
-    List<Tuple<int, char[,]>> tileData = this._map.GetTileDataInRange(
-        (int)(this._center - this._width < 0 ? 0 : this._center - this._width),
-        Math.Max((int)(this._center - this._width < 0 ? 0 : this._center - this._width) + 2, (int)(this._center + this._width))
-    );
-
-    int rows = tileData[0].Item2.GetLength(0);
-    int cols = tileData[0].Item2.GetLength(1);
-
-    // Calculate the player's position within the current tile
-    int playerTilePosition = playerPos % 30;
-
-    // Loop through rows of the tiles
-    for (int i = 0; i < rows; i++)
+    public void Display(char player=' ')
     {
-        // Loop through each tile in tileData
-        foreach (Tuple<int, char[,]> data in tileData)
+        if (player == ' ')
         {
-            // Calculate the starting position in the console window for each tile
-            int consoleStartX = data.Item1 * 30;
+            player = this._player.Show();
+        }
 
-            // Loop through columns of the tiles
-            for (int j = 0; j < cols; j++)
+        Console.Clear();
+        Console.CursorVisible = false;
+
+        int playerPos = this._player.Locate();
+        this._center = playerPos / 30;
+
+        List<Tuple<int, char[,]>> tileData = this._map.GetTileDataInRange(
+            (int)(this._center - this._width < 0 ? 0 : this._center - this._width),
+            Math.Max((int)(this._center - this._width < 0 ? 0 : this._center - this._width) + 2, (int)(this._center + this._width))
+        );
+
+        int rows = tileData[0].Item2.GetLength(0);
+        int cols = tileData[0].Item2.GetLength(1);
+
+        int playerTilePosition = playerPos % 30;
+        for (int i = 0; i < rows; i++)
+        {
+            foreach (Tuple<int, char[,]> data in tileData)
             {
-                int consoleX = consoleStartX + j;
+                int consoleStartX = data.Item1 * 30;
+                for (int j = 0; j < cols; j++)
+                {
+                    int consoleX = consoleStartX + j;
 
-                if (data.Item1 == this._center && i == 26 && j == playerTilePosition)
-                {
-                    // Print player's representation
-                    Console.Write(this._player.Show());
+                    if (data.Item1 == this._center && i == 26 && j == playerTilePosition)
+                    {
+                        float healthPercentage = this._player.GetHealth();
+                        ConsoleColor color;
+                        if (healthPercentage >= 0.60)
+                        {
+                            color = ConsoleColor.Green;
+                        }
+                        else if (healthPercentage >= 0.30)
+                        {
+                            color = ConsoleColor.Yellow;
+                        }
+                        else
+                        {
+                            color = ConsoleColor.Red;
+                        }
+
+                        Console.ForegroundColor = color;
+                        Console.Write(player);
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        Console.Write(data.Item2[i, j]);
+                    }
                 }
-                else
+            }
+            Console.WriteLine();
+        }
+    }
+
+    public bool LookForCollision()
+    {
+        int playerPos = this._player.Locate();
+        int playerTilePosition = playerPos % 30;
+        int centerTileIndex = playerPos / 30;
+        this._center = centerTileIndex;
+
+        List<Tuple<int, char[,]>> tileData = this._map.GetTileDataInRange(
+            (int)(this._center - this._width < 0 ? 0 : this._center - this._width),
+            Math.Max((int)(this._center - this._width < 0 ? 0 : this._center - this._width) + 2, (int)(this._center + this._width))
+        );
+
+        foreach (var data in tileData)
+        {
+            if (data.Item1 == centerTileIndex)
+            {
+                char characterAtPlayerPosition = data.Item2[26, playerTilePosition];
+                if (characterAtPlayerPosition == ' ' || characterAtPlayerPosition == '^')
                 {
-                    // Print tile data
-                    Console.Write(data.Item2[i, j]);
+                    return false;
                 }
             }
         }
 
-        Console.WriteLine();
+        return true;
     }
-}
 
+    public char[,] Snapshot()
+    {
+        List<Tuple<int, char[,]>> tileData = this._map.GetTileDataInRange(0, -1);
 
+        int rows = tileData[0].Item2.GetLength(0);
+        int cols = tileData[0].Item2.GetLength(1);
+
+        char[,] allTiles = new char[rows, cols * tileData.Count];
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int t = 0; t < tileData.Count; t++)
+            {
+                Tuple<int, char[,]> data = tileData[t];
+                char[,] tile = data.Item2;
+
+                int startCol = t * cols;
+
+                for (int j = 0; j < cols; j++)
+                {
+                    allTiles[i, startCol + j] = tile[i, j];
+                }
+            }
+        }
+        return allTiles;
+    }
 }
 
