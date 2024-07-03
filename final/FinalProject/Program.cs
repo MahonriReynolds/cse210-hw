@@ -4,10 +4,9 @@ class Program
     static void Main(string[] args)
     {
         Map map = new Map();
-        Player player = new Player(['@', '>', '-'], 1);
+        Player player = new Player(['@', '>', '-', '<'], 10);
         player.Spawn(0);
         Camera camera = new Camera(1, map, player);
-        
 
         bool run = true;
         while (run)
