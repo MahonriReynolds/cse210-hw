@@ -26,12 +26,10 @@ public class PlayMenu : Interface
             case ConsoleKey.UpArrow:
                 return [0, -1];
 
-
             case ConsoleKey.Backspace:
-                return [-3, 0];
+                return [-8, 0];
             case ConsoleKey.Tab:
-                return [3, 0];
-
+                return [8, 0];
 
             case ConsoleKey.Escape:
                 return [-1, -1];

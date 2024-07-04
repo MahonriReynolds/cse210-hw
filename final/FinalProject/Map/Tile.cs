@@ -27,9 +27,14 @@ public class Tile
         {
             for (int j = 0; j < this._width; j++)
             {
-                if (random.NextDouble() < 0.1)
+                double prob = random.NextDouble();
+                if (prob < 0.1)
                 {
-                    this._content[i, j] = '^';
+                    this._content[i, j] = '_';
+                }
+                else if (prob > 0.99)
+                {
+                    this._content[i, j] = 'X';
                 }
                 else
                 {
@@ -239,10 +244,10 @@ public class Tile
             string[] cabin =
             {
                 @"                              ",
-                @"   Navigate ------ <- ->      ",
-                @"   Dash ---------- Λ V        ",
-                @"   Pause game ---- Escape     ",
-                @"                              ",
+                @" Navigate --------- <- Λ V -> ",
+                @" Dash Forwards ---- Tab       ",
+                @" Dash Backwards --- Backspace ",
+                @" Pause game ------- Escape    ",
                 @"   /\                         ",
                 @"  /%%\  /\                    ",
                 @" /%%%%\/%%\                   ",
@@ -260,14 +265,14 @@ public class Tile
                 @"%%%%%\_________|- |_]|,~~~~~, ",
                 @"%%%%%\___#__#__|__|_],~~~~~~~,",
                 @"%%%%%%'''\/'''/  \'  ,~~;~~,~,",
-                @"%%%%%%%\   _-           '|' ^ ",
-                @"%%%%%%%\       ^       ~'''~  ",
-                @"%%%%#%%#\ ^      _- ^   ^    ^",
+                @"%%%%%%%\   _-           '|' _ ",
+                @"%%%%%%%\       _       ~'''~  ",
+                @"%%%%#%%#\ _      _- _   _    _",
                 @"'''''\/''   _-          _-    ",
-                @"^   o  ^        ^           ^ ",
-                @" ^          ^          ^      ",
-                @"    ^                ^      ^ ",
-                @"  ^       ^     ^     ^      ^",
+                @"_      _        _           _ ",
+                @" _          _          _      ",
+                @"    _                _      _ ",
+                @"  _       _     _     _      _",
             };
 
             for (int i = 0; i < this._width; i++)
@@ -278,6 +283,51 @@ public class Tile
                 }
             }
         }
+        else if (verdure == 100)
+        {
+            string[] finishLine =
+            {
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"                              ",
+                @"______________________________",
+                @"  _     ||  .-..--. _      _  ",
+                @"       _|| | ☾ \.--'   _      ",
+                @" _      || ||-.|   |          ",
+                @"   _    ||_|'-||   |    _    _",
+                @" _  _   || '-. |.--' _   _    ",
+                @"       _||      _           _ ",
+                @" _      ||  _          _      ",
+                @"    _   ||           _      _ ",
+                @"  _     ||_     _     _      _",
+            };
+
+            for (int i = 0; i < this._width; i++)
+            {
+                for (int j = 0; j < this._width; j++)
+                {
+                    this._content[i, j] = finishLine[i][j];
+                }
+            }
+        }
+
         else
         {
             int targetIndex = verdure * trees.Count / 100 - 1;

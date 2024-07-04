@@ -16,7 +16,7 @@ public class Camera
         this._player = player;
     }
 
-    public void Display(char playerModel=' ')
+    public void Display(TimeSpan timing, char playerModel=' ')
     {
         if (playerModel == ' ')
         {
@@ -78,8 +78,8 @@ public class Camera
         }
 
         int barLength = 15;
-
         int filledStamina = (int)(this._player.CheckStamina() * barLength);
+        int filledHealth = (int)(this._player.GetHealth() * barLength);
         Console.Write("Stamina: [");
         for (int i = 0; i < barLength; i++)
         {
@@ -92,10 +92,7 @@ public class Camera
                 Console.Write('-');
             }
         }
-        Console.WriteLine("]");
-
-        int filledHealth = (int)(this._player.GetHealth() * barLength);
-        Console.Write("Health:  [");
+        Console.Write("]  Health: [");
         for (int i = 0; i < barLength; i++)
         {
             if (i < filledHealth)
@@ -107,10 +104,10 @@ public class Camera
                 Console.Write('-');
             }
         }
-        Console.WriteLine("]");
+        Console.Write($"]  Time: [{timing.Minutes:D2}:{timing.Seconds:D2}]");
     }
 
-    public bool LookForCollision()
+    public int LookForCollision()
     {
         int[] playerPos = this._player.Locate();
         int playerTilePosition = playerPos[0] % 30;
@@ -127,13 +124,17 @@ public class Camera
             if (data.Item1 == centerTileIndex)
             {
                 char characterAtPlayerPosition = data.Item2[playerPos[1], playerTilePosition];
-                if (characterAtPlayerPosition == ' ' || characterAtPlayerPosition == '^')
+                if (characterAtPlayerPosition == ' ' || characterAtPlayerPosition == '_')
                 {
-                    return false;
+                    return 0;
+                }
+                if (characterAtPlayerPosition == '|')
+                {
+                    return 2;
                 }
             }
         }
-        return true;
+        return 1;
     }
 
     public char[,] Snapshot()

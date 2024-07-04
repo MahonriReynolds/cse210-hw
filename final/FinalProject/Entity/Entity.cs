@@ -5,7 +5,7 @@ public abstract class Entity
     private int _yPos;
 
     private int _maxHealth;
-    private int _health;
+    private float _health;
     private int _attack;
     private int _defense;
 
@@ -62,7 +62,7 @@ public abstract class Entity
 
     public float GetHealth()
     {
-        return (float)this._health / this._maxHealth;
+        return this._health / this._maxHealth;
     }
 
     public int[] Locate()
@@ -80,9 +80,9 @@ public abstract class Entity
         return this._isAlive;
     }
 
-    public void Heal(int healAmount)
+    public void Heal(float healAmount)
     {
-        int newHealth = this._health + healAmount;
+        float newHealth = this._health + healAmount;
         if (newHealth <= this._maxHealth)
         {
             this._health = newHealth;
