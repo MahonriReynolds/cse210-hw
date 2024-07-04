@@ -21,7 +21,7 @@ public class PauseMenu : UserInterface
         string filePath;
         do
         {
-            filePath = this.GetInput(5, 8, ["Record file:\n\t>"])[0].Trim();
+            filePath = this.GetInput(5, 8, ["Record file (.txt is suggested):\n\t>"])[0].Trim();
         }while (
             string.IsNullOrWhiteSpace(filePath) ||
             filePath.IndexOfAny(Path.GetInvalidPathChars()) >= 0

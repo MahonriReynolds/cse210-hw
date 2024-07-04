@@ -2,7 +2,7 @@
 public class Player:Entity
 {
 
-    private int _stamina;
+    private float _stamina;
     private int _maxStamina;
 
     public Player(char[] model, int maxHealth, int maxStamina)
@@ -12,13 +12,23 @@ public class Player:Entity
         this._stamina = this._maxStamina;
     }
 
-    public int CheckStamina()
+    public float CheckStamina()
     {
-        return this._stamina;
+        return this._stamina / this._maxStamina;
+    }
+
+    public bool UseStamina(int used)
+    {
+        if (this._stamina >= used)
+        {
+            this._stamina -= used;
+            return true;
+        }
+        return false;
     }
 
     public void Rest()
     {
-        this._stamina += 1;
+        this._stamina += 0.05f;
     }
 }

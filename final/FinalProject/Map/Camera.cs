@@ -16,11 +16,11 @@ public class Camera
         this._player = player;
     }
 
-    public void Display(char player=' ')
+    public void Display(char playerModel=' ')
     {
-        if (player == ' ')
+        if (playerModel == ' ')
         {
-            player = this._player.Show();
+            playerModel = this._player.Show();
         }
 
         Console.Clear();
@@ -65,7 +65,7 @@ public class Camera
                         }
 
                         Console.ForegroundColor = color;
-                        Console.Write(player);
+                        Console.Write(playerModel);
                         Console.ResetColor();
                     }
                     else
@@ -74,8 +74,40 @@ public class Camera
                     }
                 }
             }
-            Console.WriteLine();
+            Console.WriteLine();    
         }
+
+        int barLength = 15;
+
+        int filledStamina = (int)(this._player.CheckStamina() * barLength);
+        Console.Write("Stamina: [");
+        for (int i = 0; i < barLength; i++)
+        {
+            if (i < filledStamina)
+            {
+                Console.Write('#');
+            }
+            else
+            {
+                Console.Write('-');
+            }
+        }
+        Console.WriteLine("]");
+
+        int filledHealth = (int)(this._player.GetHealth() * barLength);
+        Console.Write("Health:  [");
+        for (int i = 0; i < barLength; i++)
+        {
+            if (i < filledHealth)
+            {
+                Console.Write('#');
+            }
+            else
+            {
+                Console.Write('-');
+            }
+        }
+        Console.WriteLine("]");
     }
 
     public bool LookForCollision()
@@ -101,7 +133,6 @@ public class Camera
                 }
             }
         }
-
         return true;
     }
 
