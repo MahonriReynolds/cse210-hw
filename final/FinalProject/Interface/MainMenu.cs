@@ -1,6 +1,6 @@
 
 
-public class MainMenu : UserInterface
+public class MainMenu : Interface
 {
     public MainMenu()
     : base (@"

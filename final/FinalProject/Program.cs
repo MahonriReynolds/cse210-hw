@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 
 class Program
 {
@@ -14,11 +12,11 @@ class Program
         {
             Map map = new Map(1);
             Player player = new Player(new char[] { '|', '>', '—', '<' }, 10, 10);
-            player.Spawn(16);
+            player.Spawn(16, 26);
             Camera camera = new Camera(1, map, player);
 
             bool run = true;
-            int userInput = 0;
+            int[] userInput = [0, 0];
             bool pauseMenuActive = false;
 
             Task inputTask = Task.Run(async () =>
@@ -29,7 +27,7 @@ class Program
                     {
                         userInput = playMenu.GetMovement();
                     }
-                    await Task.Delay(25);
+                    await Task.Delay(50);
                 }
             });
 
@@ -47,23 +45,23 @@ class Program
                     }
                     run = Convert.ToBoolean(pauseChoice);
                     pauseMenuActive = false;
-                    userInput = 0;
+                    userInput = [0, 0];
                 }
-                else if (userInput == 2)
+                else if (userInput[0] == -1 && userInput[1] == -1)
                 {
                     pauseMenuActive = true;
                 }
-                else if (userInput != 0)
+                else if (userInput[0] != 0 || userInput[1] != 0)
                 {
-                    int direction = userInput > 0 ? 1 : -1;
-                    if (Math.Abs(userInput) == 3 && player.UseStamina(1))
+                    int direction = userInput[0] == 0 ? 0 : (userInput[0] > 0 ? 1 : -1);
+                    if (Math.Abs(userInput[0]) == 3 && player.UseStamina(1))
                     {
                         char[] sequence = player.GetAttackSequence(direction);
                         for (int i = 0; i <= 3; i++)
                         {
-                            player.Advance(direction);
+                            player.Advance(direction, userInput[1]);
                             camera.Display(sequence[i]);
-                            await Task.Delay(25);
+                            await Task.Delay(50);
 
                             if (camera.LookForCollision())
                             {
@@ -71,14 +69,14 @@ class Program
                                 {
                                     run = false;
                                 }
-                                player.Advance(-(userInput * 2));
+                                player.Advance(-(userInput[0] * 2), -(userInput[1] * 2));
                             }
                         }
                     }
                     else
                     {
-                        player.Advance(direction);
-                        await Task.Delay(25);
+                        player.Advance(direction, userInput[1]);
+                        await Task.Delay(50);
 
                         if (camera.LookForCollision())
                         {
@@ -86,10 +84,10 @@ class Program
                             {
                                 run = false;
                             }
-                            player.Advance(-(userInput * 2));
+                            player.Advance(-(userInput[0] * 2), -(userInput[1] * 2));
                         }
                     }
-                    userInput = 0;
+                    userInput = [0, 0];
                 }
                 else
                 {
@@ -104,7 +102,7 @@ class Program
                     }
                     run = false;
                 }
-                await Task.Delay(25);
+                await Task.Delay(50);
             }
             await inputTask;
         }

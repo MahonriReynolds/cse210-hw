@@ -26,8 +26,8 @@ public class Camera
         Console.Clear();
         Console.CursorVisible = false;
 
-        int playerPos = this._player.Locate();
-        this._center = playerPos / 30;
+        int[] playerPos = this._player.Locate();
+        this._center = playerPos[0] / 30;
 
         List<Tuple<int, char[,]>> tileData = this._map.GetTileDataInRange(
             (int)(this._center - this._width < 0 ? 0 : this._center - this._width),
@@ -37,7 +37,7 @@ public class Camera
         int rows = tileData[0].Item2.GetLength(0);
         int cols = tileData[0].Item2.GetLength(1);
 
-        int playerTilePosition = playerPos % 30;
+        int playerTilePosition = playerPos[0] % 30;
         for (int i = 0; i < rows; i++)
         {
             foreach (Tuple<int, char[,]> data in tileData)
@@ -47,7 +47,7 @@ public class Camera
                 {
                     int consoleX = consoleStartX + j;
 
-                    if (data.Item1 == this._center && i == 26 && j == playerTilePosition)
+                    if (data.Item1 == this._center && i == playerPos[1] && j == playerTilePosition)
                     {
                         float healthPercentage = this._player.GetHealth();
                         ConsoleColor color;
@@ -112,9 +112,9 @@ public class Camera
 
     public bool LookForCollision()
     {
-        int playerPos = this._player.Locate();
-        int playerTilePosition = playerPos % 30;
-        int centerTileIndex = playerPos / 30;
+        int[] playerPos = this._player.Locate();
+        int playerTilePosition = playerPos[0] % 30;
+        int centerTileIndex = playerPos[0] / 30;
         this._center = centerTileIndex;
 
         List<Tuple<int, char[,]>> tileData = this._map.GetTileDataInRange(
@@ -126,7 +126,7 @@ public class Camera
         {
             if (data.Item1 == centerTileIndex)
             {
-                char characterAtPlayerPosition = data.Item2[26, playerTilePosition];
+                char characterAtPlayerPosition = data.Item2[playerPos[1], playerTilePosition];
                 if (characterAtPlayerPosition == ' ' || characterAtPlayerPosition == '^')
                 {
                     return false;

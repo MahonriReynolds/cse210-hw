@@ -15,9 +15,5 @@ public class EndMenu : PauseMenu
         ";
         this._options = ["Quit", "Record Progress"];
     }
-
 }
-
-
-
 

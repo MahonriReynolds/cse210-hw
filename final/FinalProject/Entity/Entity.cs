@@ -2,6 +2,7 @@
 public abstract class Entity
 {
     private int _xPos;
+    private int _yPos;
 
     private int _maxHealth;
     private int _health;
@@ -33,17 +34,29 @@ public abstract class Entity
         this._defense = defense;
     }
 
-    public void Spawn(int xPos)
+    public void Spawn(int xPos, int yPos)
     {
         this._xPos = xPos;
+        this._yPos = yPos;
     }
 
-    public void Advance(int x)
+    public void Advance(int x, int y)
     {
         this._xPos += x;
         if (this._xPos < 0)
         {
             this._xPos = 0;
+        }
+
+        this._yPos += y;
+        if (this._yPos < 26)
+        {
+            this._yPos = 26;
+        }
+
+        if (this._yPos > 29)
+        {
+            this._yPos = 29;
         }
     }
 
@@ -52,9 +65,9 @@ public abstract class Entity
         return (float)this._health / this._maxHealth;
     }
 
-    public int Locate()
+    public int[] Locate()
     {
-        return this._xPos;
+        return [this._xPos, this._yPos];
     }
 
     public bool TakeDamage(int damageAmount)

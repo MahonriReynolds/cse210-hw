@@ -1,6 +1,6 @@
 
 
-public class PauseMenu : UserInterface
+public class PauseMenu : Interface
 {
     public PauseMenu()
     : base (@"

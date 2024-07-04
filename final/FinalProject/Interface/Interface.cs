@@ -1,11 +1,11 @@
 
 
-public abstract class UserInterface
+public abstract class Interface
 {
     protected string _header;
     protected string[] _options;
 
-    public UserInterface(string header, string[] options)
+    public Interface(string header, string[] options)
     {
         this._header = header;
         this._options = options;
