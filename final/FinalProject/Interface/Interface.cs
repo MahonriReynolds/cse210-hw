@@ -43,6 +43,10 @@ public abstract class Interface
             Console.SetCursorPosition(0, startY + this._options.Length + 1);
             Console.WriteLine("Λ V to navigate\nEnter to select");
 
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
+            }
             key = Console.ReadKey(true).Key;
 
             switch (key)
