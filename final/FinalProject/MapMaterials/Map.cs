@@ -5,17 +5,17 @@ public class Map:MapMaker
 {
     private Dictionary<(int, int), char> _mapContent;
 
-    public Map(int seed, int genWidth, int genHeight)
+    public Map(int seed, int initWidth, int initHeight)
     : base (seed)
     {
         this._mapContent = new Dictionary<(int, int), char>();
-        int startX = -(genWidth / 2);
-        int startY = -(genHeight / 2);
+        int startX = -(initWidth / 2);
+        int startY = -(initHeight / 2);
 
-        for (int x = 0; x < genWidth; x++)
+        for (int x = 0; x < initWidth; x++)
         {
             int mapX = startX + x;
-            for (int y = 0; y < genHeight; y++)
+            for (int y = 0; y < initHeight; y++)
             {
                 int mapY = startY + y;
                 this._mapContent[(mapX, mapY)] = MakeCell(mapX, mapY);
@@ -38,7 +38,10 @@ public class Map:MapMaker
             for (int y = 0; y < height; y++)
             {
                 int mapY = startY + y;
-                this._mapContent[(mapX, mapY)] = MakeCell(mapX, mapY);
+                if (!this._mapContent.ContainsKey((mapX, mapY)))
+                {
+                    this._mapContent[(mapX, mapY)] = MakeCell(mapX, mapY);
+                }
             }
         }
 
@@ -49,7 +52,10 @@ public class Map:MapMaker
             for (int x = 0; x < width; x++)
             {
                 int mapX = startX + x;
-                this._mapContent[(mapX, mapY)] = MakeCell(mapX, mapY);
+                if (!this._mapContent.ContainsKey((mapX, mapY)))
+                {
+                    this._mapContent[(mapX, mapY)] = MakeCell(mapX, mapY);
+                }
             }
         }
     }

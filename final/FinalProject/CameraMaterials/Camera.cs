@@ -16,10 +16,13 @@ public class Camera
         this._frame2.Fill(content);
     }
 
-    public void Display(int width, int height, int[] center)
+    public void Display()
     {
         char[,] frame1Data = this._frame1.GetContent();
         char[,] frame2Data = this._frame2.GetContent();
+
+        int height = frame1Data.GetLength(0);
+        int width = frame1Data.GetLength(1);
 
         Console.CursorVisible = false;
         for (int i = 0; i < width; i++)
@@ -35,7 +38,6 @@ public class Camera
             } 
         }
         Console.SetCursorPosition(0, height);
-        Console.Write($"{center[0]} , {center[1]}");
     }
 }
 

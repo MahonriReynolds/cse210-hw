@@ -2,10 +2,9 @@
 
 public class Controller
 {
-    
+
     public Controller()
     {
-
     }
 
     public int[] GetStep()
