@@ -3,12 +3,12 @@
 
 public class Map:MapMaker
 {
-    private Dictionary<(int, int), char> _mapContent;
+    private Dictionary<(int, int), (char, bool)> _mapContent;
 
     public Map(int seed, int initWidth, int initHeight)
     : base (seed)
     {
-        this._mapContent = new Dictionary<(int, int), char>();
+        this._mapContent = new Dictionary<(int, int), (char, bool)>();
         int startX = -(initWidth / 2);
         int startY = -(initHeight / 2);
 
@@ -60,9 +60,10 @@ public class Map:MapMaker
         }
     }
 
-    public char[,] GetSelection(int[] center, int width, int height)
+    public (char[,], bool[,]) GetSelection(int[] center, int width, int height)
     {
         char[,] selection = new char[width, height];
+        bool[,] pathways = new bool[width, height];
         int startX = center[0] - width / 2;
         int startY = center[1] - height / 2;
 
@@ -72,12 +73,14 @@ public class Map:MapMaker
             {
                 int mapX = startX + x;
                 int mapY = startY + y;
-                selection[x, y] = this._mapContent[(mapX, mapY)];
+                selection[x, y] = this._mapContent[(mapX, mapY)].Item1;
+                pathways[x, y] = this._mapContent[(mapX, mapY)].Item2;
             }
         }
         
-        return selection;
+        return (selection, pathways);
     }
+
 }
 
 

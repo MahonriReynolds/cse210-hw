@@ -9,9 +9,9 @@ public class Frame
         this._contentArray = new char[width, height];
     }
 
-    public void UpdateCell(int x, int y, char content)
+    public void UpdateCell(int[] coords, char content)
     {
-        this._contentArray[x, y] = content;
+        this._contentArray[coords[0], coords[1]] = content;
     }
 
     public void Fill(char[,] fillContent)

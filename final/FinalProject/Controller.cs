@@ -2,12 +2,14 @@
 
 public class Controller
 {
+    private PlayerO _player;
 
-    public Controller()
+    public Controller(PlayerO player)
     {
+        this._player = player;
     }
 
-    public int[] GetStep()
+    public int[][] MovePlayer()
     {
         int[] step = [0, 0];
 
@@ -28,7 +30,9 @@ public class Controller
                 break;
         }
 
-        return step;
+        this._player.Advance(step);
+
+        return [step, this._player.Locate()];
     }
 
 }

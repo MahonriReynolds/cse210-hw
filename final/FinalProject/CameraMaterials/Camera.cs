@@ -1,5 +1,7 @@
 
 
+using System.Data;
+
 public class Camera
 {
     private Frame _frame1;
@@ -11,9 +13,20 @@ public class Camera
         this._frame2 = new Frame(viewWidth, viewHeight);
     }
 
-    public void MakeNextFrame(char[,] content)
+    public void MakeNextFrame(char[,] mapContent, char[,] meshContent)
     {
-        this._frame2.Fill(content);
+        this._frame2.Fill(mapContent);
+
+        for (int i = 0; i < mapContent.GetLength(0); i++)
+        {
+            for (int j = 0; j < mapContent.GetLength(1); j++)
+            {
+                if (meshContent[i, j] != '\0')
+                {
+                    this._frame2.UpdateCell([i, j], meshContent[i, j]);
+                }
+            }
+        }
     }
 
     public void Display()
@@ -21,8 +34,8 @@ public class Camera
         char[,] frame1Data = this._frame1.GetContent();
         char[,] frame2Data = this._frame2.GetContent();
 
-        int height = frame1Data.GetLength(0);
-        int width = frame1Data.GetLength(1);
+        int height = frame1Data.GetLength(1);
+        int width = frame1Data.GetLength(0);
 
         Console.CursorVisible = false;
         for (int i = 0; i < width; i++)
@@ -31,7 +44,7 @@ public class Camera
             {
                 if (frame1Data[i, j] != frame2Data[i, j])
                 {
-                    this._frame1.UpdateCell(i, j, frame2Data[i, j]);
+                    this._frame1.UpdateCell([i, j], frame2Data[i, j]);
                     Console.SetCursorPosition(i, j);
                     Console.Write(frame2Data[i, j]);
                 }

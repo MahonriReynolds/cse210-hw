@@ -2,10 +2,10 @@
 
 public class Game
 {
-    private Controller _controller;
     private Map _map;
     private Camera _camera;
     private PlayerO _player;
+    private Controller _controller;
     private Mesh _mesh;
     private bool _isRunning;
     private int _width;
@@ -13,10 +13,10 @@ public class Game
 
     public Game(int width, int height, int seed=0)
     {
-        this._controller = new Controller();
         this._map = new Map(seed, width, height);
         this._camera = new Camera(width, height);
         this._player = new PlayerO(0, 0, 100, 5, 50);
+        this._controller = new Controller(this._player);
         this._mesh = new Mesh(this._player);
         this._isRunning = true;
         this._width = width;
@@ -25,25 +25,43 @@ public class Game
 
     public void RunGameLoop()
     {
-        // main menu goes here?
         Console.Clear();
+
+        int[] playerPos = this._player.Locate();
+        int[] centerPos = playerPos;
+        int[][] movementStats;
+        int[] step;
 
         while (this._isRunning)
         {
-            int[] step = this._controller.GetStep();
-            this._player.Advance(step);
-            int[] playerPos = this._player.Locate();
+            movementStats = this._controller.MovePlayer();
+            step = movementStats[0];
+            playerPos = movementStats[1];
 
-            this._map.Extend(playerPos, this._width, this._height, step);
-            this._camera.MakeNextFrame(this._map.GetSelection(playerPos, this._width, this._height));
-            this._camera.Display();
+            int xPosDelta = Math.Abs(playerPos[0] - centerPos[0]);
+            int yPosDelta = Math.Abs(playerPos[1] - centerPos[1]);
 
-            this._mesh.CheckForCollision();
-
-            if (this._player.GetHealthPercentage() <= 0)
+            if (xPosDelta > this._width / 6 || yPosDelta > this._height / 6)
             {
-                this._isRunning = false;
+                centerPos[0] += step[0];
+                centerPos[1] += step[1];
             }
+
+            this._map.Extend(centerPos, this._width, this._height, step);
+
+            (char[,], bool[,]) mapSelection = this._map.GetSelection(centerPos, this._width, this._height);
+
+            if (this._mesh.CheckCollision(centerPos, mapSelection.Item2))
+            {
+                this._player.Advance([-step[0], -step[1]]);
+            }
+
+            this._camera.MakeNextFrame(
+                mapSelection.Item1,
+                this._mesh.GetSelection(centerPos, this._width, this._height)
+            );
+
+            this._camera.Display();
         }
     }
 }

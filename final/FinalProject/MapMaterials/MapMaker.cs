@@ -43,7 +43,7 @@ public abstract class MapMaker
         return weightedArray.Last().Item1;
     }
 
-    private char NoiseToChar(float noise)
+    private (char, bool) NoiseToCell(float noise)
     {
         (char, float)[] water = [('_', 0.34f), (' ', 0.66f)];
         (char, float)[] sand = [('.', 0.50f), (',', 0.25f), (' ', 0.25f)];
@@ -52,19 +52,19 @@ public abstract class MapMaker
         
         if (noise < 0.40f)
         {
-            return WeightedRandom(water);
+            return (WeightedRandom(water), false);
         }
         else if (noise < 0.42f)
         {
-            return WeightedRandom(sand);
+            return (WeightedRandom(sand), true);
         }
         else if (noise < 0.70f)
         {   
-            return WeightedRandom(plains);
+            return (WeightedRandom(plains), true);
         }
         else
         {
-        return WeightedRandom(forest);   
+        return (WeightedRandom(forest), false);   
         }
     }
 
@@ -111,9 +111,9 @@ public abstract class MapMaker
         return (result + 1) / 2;
     }
 
-    public char MakeCell(int x, int y)
+    public (char, bool) MakeCell(int x, int y)
     {
-        return NoiseToChar(GenerateNoise(x * this._scaler, y * this._scaler));
+        return NoiseToCell(GenerateNoise(x * this._scaler, y * this._scaler));
     }
 }
 
