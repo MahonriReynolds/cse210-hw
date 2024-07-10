@@ -7,7 +7,7 @@ public abstract class MapMaker
     private readonly int[] _table;
     private readonly float _scaler;
 
-    public MapMaker(int seed, float scaler=0.01f, int tableSize=256)
+    public MapMaker(int seed, float scaler=0.01f, int tableSize=512)
     {
         _random = new Random(seed);
         this._table = new int [tableSize * 2];
@@ -46,25 +46,37 @@ public abstract class MapMaker
     private (char, bool) NoiseToCell(float noise)
     {
         (char, float)[] water = [('_', 0.34f), (' ', 0.66f)];
-        (char, float)[] sand = [('.', 0.50f), (',', 0.25f), (' ', 0.25f)];
-        (char, float)[] forest = [('Ʌ', 0.25f), ('⌄', 0.25f), (' ', 0.50f)];
-        (char, float)[] plains = [('⌄', 0.10f), (' ', 0.90f)];
+        (char, float)[] sand = [('.', 0.35f), ('~', 0.35f), (',', 0.15f), (' ', 0.15f)];
+        (char, float)[] forest = [('Ʌ', 0.25f), ('^', 0.25f), (' ', 0.50f)];
+        (char, float)[] plains = [('⌄', 0.05f), ('.', 0.025f), (' ', 0.925f)];
         
-        if (noise < 0.40f)
+        if (noise < this._scaler * 26)
         {
-            return (WeightedRandom(water), false);
+            return (WeightedRandom(forest), false);   
         }
-        else if (noise < 0.42f)
+        else if (noise < this._scaler * 50)
+        {   
+            return (WeightedRandom(plains), true);
+        }
+        else if (noise < this._scaler * 53)
         {
             return (WeightedRandom(sand), true);
         }
-        else if (noise < 0.70f)
+        else if (noise < this._scaler * 60)
+        {
+            return (WeightedRandom(water), false);
+        }
+        else if (noise < this._scaler * 63)
+        {
+            return (WeightedRandom(sand), true);
+        }
+        else if (noise < this._scaler * 75)
         {   
             return (WeightedRandom(plains), true);
         }
         else
         {
-        return (WeightedRandom(forest), false);   
+            return (WeightedRandom(forest), false);   
         }
     }
 
@@ -88,8 +100,8 @@ public abstract class MapMaker
 
     public float GenerateNoise(float xf, float yf)
     {
-        int X = (int)Math.Floor(xf) & 255;
-        int Y = (int)Math.Floor(yf) & 255;
+        int X = (int)Math.Floor(xf) & (this._table.GetLength(0) / 2 - 1);
+        int Y = (int)Math.Floor(yf) & (this._table.GetLength(0) / 2 - 1);
 
         xf -= (int)Math.Floor(xf);
         yf -= (int)Math.Floor(yf);

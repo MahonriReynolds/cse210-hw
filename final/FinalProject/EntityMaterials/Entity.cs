@@ -4,6 +4,7 @@ public abstract class Entity
 {
     private int _xPos;
     private int _yPos;
+    private int[] _prevStep;
     private int _maxHealth;
     private float _health;
     private float _attack;
@@ -17,6 +18,7 @@ public abstract class Entity
         this._health = maxHealth;
         this._attack = attack;
         this._model = model;
+        this._prevStep = [0, 0];
     }
 
     public float GetAttack()
@@ -43,6 +45,13 @@ public abstract class Entity
     {
         this._xPos += step[0];
         this._yPos += step[1];
+        this._prevStep = step;
+    }
+
+    public void BackStep()
+    {
+        this._xPos -= this._prevStep[0];
+        this._yPos -= this._prevStep[1];
     }
 
     public int[] Locate()
@@ -54,6 +63,5 @@ public abstract class Entity
     {
         return $"{this._model}";
     }
-
 }
 

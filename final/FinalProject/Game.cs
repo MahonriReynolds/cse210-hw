@@ -29,14 +29,11 @@ public class Game
 
         int[] playerPos = this._player.Locate();
         int[] centerPos = playerPos;
-        int[][] movementStats;
         int[] step;
 
         while (this._isRunning)
         {
-            movementStats = this._controller.MovePlayer();
-            step = movementStats[0];
-            playerPos = movementStats[1];
+            (step, playerPos) = this._controller.MovePlayer();
 
             int xPosDelta = Math.Abs(playerPos[0] - centerPos[0]);
             int yPosDelta = Math.Abs(playerPos[1] - centerPos[1]);
@@ -45,16 +42,12 @@ public class Game
             {
                 centerPos[0] += step[0];
                 centerPos[1] += step[1];
+                this._map.Extend(centerPos, this._width, this._height, step);
             }
-
-            this._map.Extend(centerPos, this._width, this._height, step);
 
             (char[,], bool[,]) mapSelection = this._map.GetSelection(centerPos, this._width, this._height);
 
-            if (this._mesh.CheckCollision(centerPos, mapSelection.Item2))
-            {
-                this._player.Advance([-step[0], -step[1]]);
-            }
+            this._mesh.HandleCollision(centerPos, mapSelection.Item2);
 
             this._camera.MakeNextFrame(
                 mapSelection.Item1,

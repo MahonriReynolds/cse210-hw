@@ -15,7 +15,7 @@ public class Mesh
         this._enemies.Add(newEnemy);
     }
 
-    public bool CheckCollision(int[] center, bool[,] pathways)
+    public void HandleCollision(int[] center, bool[,] pathways)
     {
         int offsetX = pathways.GetLength(0) / 2;
         int offsetY = pathways.GetLength(1) / 2;
@@ -25,22 +25,26 @@ public class Mesh
 
         if (!pathways[playerX, playerY])
         {
-            return true;
+            this._player.BackStep();
         }
 
         foreach (EnemyX enemy in this._enemies)
         {
-            int[] enemyPos = enemy.Locate();
-            if (playerCoords[0] == enemyPos[0] && playerCoords[1] == enemyPos[1])
+            int[] enemyCoords = enemy.Locate();
+            int enemyX = playerCoords[0] - (center[0] - offsetX);
+            int enemyY = playerCoords[1] - (center[1] - offsetY);
+
+            if (!pathways[enemyX,enemyY])
             {
-                enemy.Aggro(this._player);
+                this._enemies.Remove(enemy);
+            }
+
+            if (playerCoords[0] == enemyCoords[0] && playerCoords[1] == enemyCoords[1])
+            {
                 this._player.TakeDamage(enemy.GetAttack());
-                return true;
+                this._player.BackStep();
             }
         }
-        
-
-        return false;
     }
 
     public char[,] GetSelection(int[] center, int width, int height)

@@ -4,7 +4,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        Game game = new Game(91, 27, seed: 9287);
+        int gameWidth = 91;
+        int gameHeight = 27;
+        
+        Game game = new Game(gameWidth, gameHeight, seed: 0);
         game.RunGameLoop();
     }
 }

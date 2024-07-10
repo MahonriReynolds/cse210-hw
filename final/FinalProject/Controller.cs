@@ -9,7 +9,7 @@ public class Controller
         this._player = player;
     }
 
-    public int[][] MovePlayer()
+    public (int[], int[]) MovePlayer()
     {
         int[] step = [0, 0];
 
@@ -31,9 +31,7 @@ public class Controller
         }
 
         this._player.Advance(step);
-
-        return [step, this._player.Locate()];
+        return (step, this._player.Locate());
     }
-
 }
 
