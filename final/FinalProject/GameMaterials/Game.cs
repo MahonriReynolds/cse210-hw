@@ -27,7 +27,18 @@ public class Game
     {
         Console.Clear();
 
-        int[] playerPos = this._player.Locate();
+        int[] playerPos;
+        (char[,], bool[,]) mapSelection;
+        do
+        {
+            this._player.Advance([-1, 0]);
+            playerPos = this._player.Locate();
+            this._map.Extend(playerPos, this._width, this._height, [-1, 0]);
+            mapSelection = this._map.GetSelection(playerPos, this._width, this._height);
+
+        }while (!this._mesh.CheckValidCenter(mapSelection.Item2));
+        
+        
         int[] centerPos = playerPos;
         int[] step;
 
@@ -38,14 +49,14 @@ public class Game
             int xPosDelta = Math.Abs(playerPos[0] - centerPos[0]);
             int yPosDelta = Math.Abs(playerPos[1] - centerPos[1]);
 
-            if (xPosDelta > this._width / 6 || yPosDelta > this._height / 6)
+            if (xPosDelta > this._width / 10 || yPosDelta > this._height / 10)
             {
                 centerPos[0] += step[0];
                 centerPos[1] += step[1];
                 this._map.Extend(centerPos, this._width, this._height, step);
             }
 
-            (char[,], bool[,]) mapSelection = this._map.GetSelection(centerPos, this._width, this._height);
+            mapSelection = this._map.GetSelection(centerPos, this._width, this._height);
 
             this._mesh.HandleCollision(centerPos, mapSelection.Item2);
 

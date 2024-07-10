@@ -5,16 +5,16 @@ public abstract class MapMaker
 {
     private readonly Random _random;
     private readonly int[] _table;
-    private readonly float _scaler;
+    private readonly double _scaler;
 
-    public MapMaker(int seed, float scaler=0.01f, int tableSize=512)
+    public MapMaker(int seed, double scaler=0.01, int tableSize=256)
     {
         _random = new Random(seed);
         this._table = new int [tableSize * 2];
 
-        for (int i = 0; i < tableSize; i++)
+        for (int i = 0; i < tableSize * 2; i++)
         {
-            this._table[i] = i;
+            this._table[i] = i % tableSize;
         }
 
         for (int i = 0; i < tableSize; i++)
@@ -31,7 +31,7 @@ public abstract class MapMaker
     private char WeightedRandom((char, float)[] weightedArray)
     {
         float totalWeight = weightedArray.Sum(item => item.Item2);
-        float randomValue = (float)new Random().NextDouble() * totalWeight;
+        float randomValue = (float)this._random.NextDouble() * totalWeight;
 
         foreach ((char character, float weight) in weightedArray)
         {
@@ -43,82 +43,95 @@ public abstract class MapMaker
         return weightedArray.Last().Item1;
     }
 
-    private (char, bool) NoiseToCell(float noise)
+    private (char, bool) NoiseToCell(double noise)
     {
         (char, float)[] water = [('_', 0.34f), (' ', 0.66f)];
-        (char, float)[] sand = [('.', 0.35f), ('~', 0.35f), (',', 0.15f), (' ', 0.15f)];
-        (char, float)[] forest = [('Ʌ', 0.25f), ('^', 0.25f), (' ', 0.50f)];
+        (char, float)[] sand = [('.', 0.15f), ('~', 0.35f), (',', 0.25f), (' ', 0.25f)];
+        (char, float)[] forest = [('Ʌ', 0.20f), ('^', 0.20f), ('A', 0.10f), (' ', 0.50f)];
         (char, float)[] plains = [('⌄', 0.05f), ('.', 0.025f), (' ', 0.925f)];
         
-        if (noise < this._scaler * 26)
+        if (noise < 0.25)
         {
             return (WeightedRandom(forest), false);   
         }
-        else if (noise < this._scaler * 50)
-        {   
+        else if (noise < 0.52)
+        {
             return (WeightedRandom(plains), true);
         }
-        else if (noise < this._scaler * 53)
+        else if (noise < 0.55)
         {
             return (WeightedRandom(sand), true);
         }
-        else if (noise < this._scaler * 60)
-        {
-            return (WeightedRandom(water), false);
-        }
-        else if (noise < this._scaler * 63)
-        {
-            return (WeightedRandom(sand), true);
-        }
-        else if (noise < this._scaler * 75)
+        else if (noise < 0.73)
         {   
             return (WeightedRandom(plains), true);
+        }
+        else if (noise < 0.74)
+        {
+            return (WeightedRandom(sand), true);
         }
         else
         {
-            return (WeightedRandom(forest), false);   
+            return (WeightedRandom(water), false);   
         }
     }
 
-    private static float Fade(float t)
+    private static double Fade(double t)
     {
         return t * t * t * (t * (t * 6 - 15) + 10);
     }
 
-    private static float Lerp(float t, float a, float b)
+    private static double Lerp(double t, double a, double b)
     {
         return a + t * (b - a);
     }
 
-    private static float Grad(int hash, float x, float y)
+    private static double Grad(int hash, double x, double y)
     {
         int h = hash & 7;
-        float u = h < 4 ? x : y;
-        float v = h < 4 ? y : x;
+        double u = h < 4 ? x : y;
+        double v = h < 4 ? y : x;
         return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
     }
 
-    public float GenerateNoise(float xf, float yf)
+    public double GenerateNoise(double xf, double yf)
     {
-        int X = (int)Math.Floor(xf) & (this._table.GetLength(0) / 2 - 1);
-        int Y = (int)Math.Floor(yf) & (this._table.GetLength(0) / 2 - 1);
+        int X = (int)Math.Floor(xf) & 255;
+        int Y = (int)Math.Floor(yf) & 255;
 
-        xf -= (int)Math.Floor(xf);
-        yf -= (int)Math.Floor(yf);
+        int X1 = (X + 1) & 255;
 
-        float u = Fade(xf);
-        float v = Fade(yf);
+        xf -= Math.Floor(xf);
+        yf -= Math.Floor(yf);
+
+        double u = Fade(xf);
+        double v = Fade(yf);
 
         int A = this._table[X] + Y;
         int AA = this._table[A];
         int AB = this._table[A + 1];
-        int B = this._table[X + 1] + Y;
+        int B = this._table[X1] + Y;
         int BA = this._table[B];
         int BB = this._table[B + 1];
 
-        float result = Lerp(v,
-            Lerp(u, Grad(this._table[AA], xf, yf), Grad(this._table[BA], xf - 1, yf)),
-            Lerp(u, Grad(this._table[AB], xf, yf - 1), Grad(this._table[BB], xf - 1, yf - 1)));
+        AA %= 256;
+        AB %= 256;
+        BA %= 256;
+        BB %= 256;
+
+        double bottomLerp = Lerp(
+            u, 
+            Grad(this._table[AA], xf, yf), 
+            Grad(this._table[BA], xf - 1, yf)
+        );
+
+        double topLerp = Lerp(
+            u, 
+            Grad(this._table[AB], xf, yf - 1), 
+            Grad(this._table[BB], xf - 1, yf - 1)
+        );
+
+        double result = Lerp(v, bottomLerp, topLerp);
 
         return (result + 1) / 2;
     }

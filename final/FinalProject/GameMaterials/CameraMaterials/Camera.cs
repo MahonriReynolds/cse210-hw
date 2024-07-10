@@ -6,11 +6,26 @@ public class Camera
 {
     private Frame _frame1;
     private Frame _frame2;
+    private Dictionary<char, ConsoleColor> _colorCode;
 
     public Camera(int viewWidth, int viewHeight)
     {
         this._frame1 = new Frame(viewWidth, viewHeight);
         this._frame2 = new Frame(viewWidth, viewHeight);
+
+        this._colorCode = new Dictionary<char, ConsoleColor>()
+        {
+            {'⌄', ConsoleColor.Green},
+            {'.', ConsoleColor.Green},
+            {'Ʌ', ConsoleColor.DarkGreen},
+            {'A', ConsoleColor.DarkGreen},
+            {'^', ConsoleColor.DarkGreen},
+            {'_', ConsoleColor.DarkCyan},
+            {'~', ConsoleColor.DarkGray},
+            {',', ConsoleColor.DarkGray},
+            {'O', ConsoleColor.DarkMagenta},
+            {'X', ConsoleColor.DarkRed}
+        };
     }
 
     public void MakeNextFrame(char[,] mapContent, char[,] meshContent)
@@ -46,6 +61,15 @@ public class Camera
                 {
                     this._frame1.UpdateCell([i, j], frame2Data[i, j]);
                     Console.SetCursorPosition(i, j);
+
+                    if (this._colorCode.ContainsKey(frame2Data[i, j]))
+                    {
+                        Console.ForegroundColor = this._colorCode[frame2Data[i, j]];
+                    }
+                    else
+                    {
+                        Console.ResetColor();
+                    }            
                     Console.Write(frame2Data[i, j]);
                 }
             } 

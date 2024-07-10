@@ -15,6 +15,14 @@ public class Mesh
         this._enemies.Add(newEnemy);
     }
 
+    public bool CheckValidCenter(bool[,] pathways)
+    {
+        int initX = pathways.GetLength(0) / 2;
+        int initY = pathways.GetLength(1) / 2;
+
+        return pathways[initX, initY];
+    }
+
     public void HandleCollision(int[] center, bool[,] pathways)
     {
         int offsetX = pathways.GetLength(0) / 2;
