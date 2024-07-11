@@ -14,9 +14,9 @@ public class Game
     private float _lastAdvanceEnemies;
     private int[] _centerPos;
 
-    public Game(int width, int height, int seed=0)
+    public Game(int width, int height, int seed)
     {
-        height -= 4;
+        height -= 5;
         this._map = new Map(seed, width, height);
         this._camera = new Camera(width, height);
         this._player = new PlayerO(1, 0, 100, 5, 50);
@@ -28,10 +28,7 @@ public class Game
 
     private bool IsElapsed(float lastTriggeredTime, float intervalSeconds)
     {
-        float scale = (float)Math.Max(1.0, this._stopwatch.Elapsed.TotalSeconds / 90);
-        float adjustedInterval = intervalSeconds / scale;
-
-        return (this._stopwatch.Elapsed.TotalSeconds - lastTriggeredTime) >= adjustedInterval;
+        return (this._stopwatch.Elapsed.TotalSeconds - lastTriggeredTime) >= intervalSeconds;
     }
 
     private void SetUp()
@@ -82,13 +79,13 @@ public class Game
         
         (char[,], bool[,]) mapSelection = this._map.GetSelection(this._centerPos, this._width, this._height);
 
-        if (IsElapsed(this._lastAddEnemy, 5.00f))
+        if (IsElapsed(this._lastAddEnemy, (float)(4 / this._stopwatch.Elapsed.TotalSeconds)))
         {
             this._mesh.AddEnemy(this._centerPos, mapSelection.Item2);
             this._lastAddEnemy = (float)this._stopwatch.Elapsed.TotalSeconds;
         }
 
-        if (IsElapsed(this._lastAdvanceEnemies, 0.30f))
+        if (IsElapsed(this._lastAdvanceEnemies, 0.25f))
         {
             this._mesh.AdvanceEnemies(this._centerPos, mapSelection.Item2);
             this._lastAdvanceEnemies = (float)this._stopwatch.Elapsed.TotalSeconds;
@@ -101,12 +98,23 @@ public class Game
             this._mesh.GetSelection(this._centerPos, this._width, this._height)
         );
 
+        float playerHealth = this._player.GetHealthPercentage();
+
         this._camera.Display(
-            $"\n({playerPos[0]}, {playerPos[1]})\n" +
-            $"Health:  {(int)(this._player.GetHealthPercentage() * 100)}%\n" +
-            $"Stamina: {(int)(this._player.GetStaminaPercentage() * 100)}%"
+            $"Countdown: {(int)(60 - this._stopwatch.Elapsed.TotalSeconds)}\n" +
+            $"({playerPos[0]}, {playerPos[1]})\n" +
+            $"Health:  {(int)(playerHealth * 100)}%\n" +
+            $"Stamina: {(int)(this._player.GetStaminaPercentage() * 100)}%" 
         );
         
+        if (playerHealth <= 0)
+        {
+            return 2;
+        }
+        else if (this._stopwatch.Elapsed.TotalSeconds > 60)
+        {
+            return 3;
+        }
         return input.Item2;
     }
 
@@ -160,12 +168,17 @@ public class Game
          * Pause with Esc
 
          * Survive for 1 minute
-         ** Maybe try staying close to lakes and forests
+         ** X's get lost in lakes and forests
+         ** Pathways lead you between lakes and forests
                 
          * Close this page with Enter       
                     "
                 );
-                Console.ReadLine();
+                ConsoleKeyInfo keyInfo;
+                do
+                {
+                    keyInfo = Console.ReadKey(true);
+                } while (keyInfo.Key != ConsoleKey.Enter);
             }
             else if (choice == 2)
             {
@@ -189,15 +202,54 @@ public class Game
             }
             else if (iterationCode == 2)
             {
-                //game lost screen
+                Console.Clear();
+                Console.WriteLine(
+                    @"
+                 ____  _                            ____  _          _ 
+                |  _ \| | __ _ _   _  ___ _ __     |  _ \(_) ___  __| |
+                | |_) | |/ _` | | | |/ _ \ '__|    | | | | |/ _ \/ _` |
+                |  __/| | (_| | |_| |  __/ |       | |_| | |  __/ (_| |
+                |_|   |_|\__,_|\__, |\___|_|       |____/|_|\___|\__,_|
+                               |___/                                   
+                                                      
+        
+         You died
+         Press enter to return to the main menu  
+                    "
+                );
+                ConsoleKeyInfo keyInfo;
+                do
+                {
+                    keyInfo = Console.ReadKey(true);
+                } while (keyInfo.Key != ConsoleKey.Enter);
+                return true;
             }
             else if (iterationCode == 3)
             {
-                //game won screen
+                Console.Clear();
+                Console.WriteLine(
+                    @"
+                 _____ _                _          _   _       
+                |_   _(_)_ __ ___   ___( )___     | | | |_ __  
+                  | | | | '_ ` _ \ / _ \// __|    | | | | '_ \ 
+                  | | | | | | | | |  __/ \__ \    | |_| | |_) |
+                  |_| |_|_| |_| |_|\___| |___/     \___/| .__/ 
+                                                        |_|    
+                    
+        
+         You survived
+         Press enter to return to the main menu  
+                    "
+                );
+                ConsoleKeyInfo keyInfo;
+                do
+                {
+                    keyInfo = Console.ReadKey(true);
+                } while (keyInfo.Key != ConsoleKey.Enter);
+                return true;
             }
             Thread.Sleep(30);
         }
-
         return false;
     }
 }

@@ -110,6 +110,8 @@ public class Camera
             Console.Write(' ');
             Console.SetCursorPosition(i, height + 2);
             Console.Write(' ');
+            Console.SetCursorPosition(i, height + 3);
+            Console.Write(' ');
         }
         Console.SetCursorPosition(0, height);
         Console.WriteLine(stats);
