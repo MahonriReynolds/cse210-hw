@@ -168,6 +168,7 @@ public class Game
          * Pause with Esc
 
          * Survive for 1 minute
+         ** Rest if you need to
          ** X's get lost in lakes and forests
          ** Pathways lead you between lakes and forests
                 
