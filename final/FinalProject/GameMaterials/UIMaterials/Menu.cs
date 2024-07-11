@@ -1,5 +1,4 @@
 
-
 public class Menu
 {
     private string _title;
@@ -9,14 +8,6 @@ public class Menu
     {
         this._title = title;
         this._options = options;
-    }
-
-    public virtual void Display()
-    {
-        Console.Clear();
-        Console.WriteLine(this._title);
-
-        GetChoice();
     }
 
     private int GetChoice()
@@ -45,7 +36,7 @@ public class Menu
             }
 
             Console.ResetColor();
-            Console.WriteLine("\n\n\tΛ V to navigate\n\tEnter to select");
+            Console.WriteLine("\n\nΛ V to navigate\nEnter to select");
 
             key = Console.ReadKey(true).Key;
             switch (key)
@@ -65,14 +56,14 @@ public class Menu
         Console.ResetColor();
         return selection;
     }
-}
 
-
-class Program
-{
-    static void Main()
+    public int Display()
     {
-        Menu m1 = new Menu("testing", ["1", "2", "3"]);
-        m1.Display();
+        Console.Clear();
+        Console.WriteLine(this._title);
+
+        return this.GetChoice();
     }
 }
+
+

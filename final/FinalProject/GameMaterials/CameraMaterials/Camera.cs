@@ -44,6 +44,33 @@ public class Camera
         }
     }
 
+    public void RecoverFrame()
+    {
+        char[,] frame1Data = this._frame1.GetContent();
+        int height = frame1Data.GetLength(1);
+        int width = frame1Data.GetLength(0);
+
+        Console.CursorVisible = false;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                Console.SetCursorPosition(i, j);
+
+                if (this._colorCode.ContainsKey(frame1Data[i, j]))
+                {
+                    Console.ForegroundColor = this._colorCode[frame1Data[i, j]];
+                }
+                else
+                {
+                    Console.ResetColor();
+                }            
+                Console.Write(frame1Data[i, j]);
+            }
+        }
+        Console.ResetColor();
+    }
+
     public void Display()
     {
         char[,] frame1Data = this._frame1.GetContent();
@@ -74,6 +101,7 @@ public class Camera
                 }
             } 
         }
+        Console.ResetColor();
         Console.SetCursorPosition(0, height);
     }
 }

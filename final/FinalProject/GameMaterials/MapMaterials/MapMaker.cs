@@ -47,7 +47,7 @@ public abstract class MapMaker
     {
         (char, float)[] water = [('_', 0.34f), (' ', 0.66f)];
         (char, float)[] sand = [('.', 0.15f), ('~', 0.35f), (',', 0.25f), (' ', 0.25f)];
-        (char, float)[] forest = [('Ʌ', 0.20f), ('^', 0.20f), ('A', 0.10f), (' ', 0.50f)];
+        (char, float)[] forest = [('Ʌ', 0.20f), ('^', 0.20f), ('A', 0.10f), (',', 0.05f), (' ', 0.45f)];
         (char, float)[] plains = [('⌄', 0.05f), ('.', 0.025f), (' ', 0.925f)];
         
         if (noise < 0.25)

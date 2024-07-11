@@ -48,7 +48,7 @@ public abstract class Entity
         this._prevStep = step;
     }
 
-    public void BackStep()
+    public virtual void BackStep()
     {
         this._xPos -= this._prevStep[0];
         this._yPos -= this._prevStep[1];

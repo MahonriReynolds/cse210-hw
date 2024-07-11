@@ -1,18 +1,52 @@
 
-public class Mesh
+public class EntityMesh
 {
     private PlayerO _player;
     private List<EnemyX> _enemies;
 
-    public Mesh(PlayerO player)
+    public EntityMesh(PlayerO player)
     {
         this._player = player;
         this._enemies = [];
     }
 
-    public void AddEnemy(EnemyX newEnemy)
+    public void AddEnemy(int[] center, bool[,] pathways, int width, int height)
     {
-        this._enemies.Add(newEnemy);
+        List<Tuple<int, int>> validPositions = new List<Tuple<int, int>>();
+
+        width /= 3;
+        height /= 3;
+
+        int rows = pathways.GetLength(0);
+        int cols = pathways.GetLength(1);
+
+        int exclusionStartX = center[0] - width;
+        int exclusionStartY = center[1] - height;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (pathways[i, j])
+                {
+                    if (i < exclusionStartX || i >= exclusionStartX + width ||
+                        j < exclusionStartY || j >= exclusionStartY + height)
+                    {
+                        validPositions.Add(Tuple.Create(i, j));
+                    }
+                }
+            }
+        }
+
+        Random random = new Random();
+        int randomIndex = random.Next(0, validPositions.Count);
+        Tuple<int, int> selectedPosition = validPositions[randomIndex];
+        int selectedRow = selectedPosition.Item1;
+        int selectedCol = selectedPosition.Item2;
+
+        int adjustedRow = center[0] - (rows / 2) + selectedRow;
+        int adjustedCol = center[1] - (cols / 2) + selectedCol;
+
+        this._enemies.Add(new EnemyX(adjustedRow, adjustedCol, this._player));
     }
 
     public bool CheckValidCenter(bool[,] pathways)
@@ -23,7 +57,51 @@ public class Mesh
         return pathways[initX, initY];
     }
 
-    public void HandleCollision(int[] center, bool[,] pathways)
+    public void AdvanceEnemies(int[] center, bool[,] pathways)
+    {
+        int offsetX = pathways.GetLength(0) / 2;
+        int offsetY = pathways.GetLength(1) / 2;
+
+        List<EnemyX> enemiesToRemove = [];
+
+        foreach (EnemyX enemy in this._enemies)
+        {
+            enemy.Follow();
+
+            int[] enemyCoords = enemy.Locate();
+            int enemyX = enemyCoords[0] - (center[0] - offsetX);
+            int enemyY = enemyCoords[1] - (center[1] - offsetY);
+
+            foreach (EnemyX otherEnemy in this._enemies)
+            {
+                if (enemy != otherEnemy)
+                {
+                    int[] otherEnemyCoords = otherEnemy.Locate();
+                    int otherEnemyX = otherEnemyCoords[0] - (center[0] - offsetX);
+                    int otherEnemyY = otherEnemyCoords[1] - (center[1] - offsetY);
+
+                    if (enemyX == otherEnemyX && enemyY == otherEnemyY)
+                    {
+                        enemy.BackStep();
+                    }
+                }
+                if (enemyX >= 0 && enemyX < pathways.GetLength(0) &&
+                    enemyY >= 0 && enemyY < pathways.GetLength(1))
+                {
+                    if (!pathways[enemyX, enemyY])
+                    {
+                        enemiesToRemove.Add(enemy);
+                    }
+                }
+            }
+        }
+        foreach (EnemyX enemyToRemove in enemiesToRemove)
+        {
+            this._enemies.Remove(enemyToRemove);
+        }
+    }
+
+    public void HandleCollisions(int[] center, bool[,] pathways)
     {
         int offsetX = pathways.GetLength(0) / 2;
         int offsetY = pathways.GetLength(1) / 2;
@@ -34,23 +112,18 @@ public class Mesh
         if (!pathways[playerX, playerY])
         {
             this._player.BackStep();
+            playerCoords = this._player.Locate();
         }
 
         foreach (EnemyX enemy in this._enemies)
         {
             int[] enemyCoords = enemy.Locate();
-            int enemyX = playerCoords[0] - (center[0] - offsetX);
-            int enemyY = playerCoords[1] - (center[1] - offsetY);
-
-            if (!pathways[enemyX,enemyY])
-            {
-                this._enemies.Remove(enemy);
-            }
 
             if (playerCoords[0] == enemyCoords[0] && playerCoords[1] == enemyCoords[1])
             {
                 this._player.TakeDamage(enemy.GetAttack());
-                this._player.BackStep();
+                enemy.BackStep();
+                enemy.BackStep();
             }
         }
     }
