@@ -6,10 +6,10 @@ public class Controller
     {
     }
     
-    public (int[], bool) GetStep()
+    public (int[], int) GetStep()
     {
         int[] step = [0, 0];
-        bool escape = false;
+        int escape = 0;
         if (Console.KeyAvailable)
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -29,7 +29,7 @@ public class Controller
                     step = [0, 1];
                     break;
                 case ConsoleKey.Escape:
-                    escape = true;
+                    escape = 1;
                     break;
             }
         }

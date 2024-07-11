@@ -71,7 +71,7 @@ public class Camera
         Console.ResetColor();
     }
 
-    public void Display()
+    public void Display(string stats)
     {
         char[,] frame1Data = this._frame1.GetContent();
         char[,] frame2Data = this._frame2.GetContent();
@@ -102,7 +102,17 @@ public class Camera
             } 
         }
         Console.ResetColor();
+        for(int i = 0; i < width; i++)
+        {
+            Console.SetCursorPosition(i, height);
+            Console.Write(' ');
+            Console.SetCursorPosition(i, height + 1);
+            Console.Write(' ');
+            Console.SetCursorPosition(i, height + 2);
+            Console.Write(' ');
+        }
         Console.SetCursorPosition(0, height);
+        Console.WriteLine(stats);
     }
 }
 

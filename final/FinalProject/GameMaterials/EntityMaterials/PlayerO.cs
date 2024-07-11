@@ -40,11 +40,6 @@ public class PlayerO:Entity
         
     }
 
-    public void UseStamina(float staminaUsed)
-    {
-        this._stamina -= staminaUsed;
-    }
-
     public float GetStaminaPercentage()
     {
         return this._stamina / this._maxStamina;
@@ -52,8 +47,21 @@ public class PlayerO:Entity
 
     public void Rest()
     {
-        this.Heal(0.1f);
-        this._stamina += 0.5f;
+        this.Heal(0.01f);
+        this._stamina += this._maxStamina * 0.0005f;
+        if (this._stamina > this._maxStamina)
+        {
+            this._stamina = this._maxStamina;
+        }
+    }
+
+    public override void Advance(int[] step)
+    {
+        if (this._stamina > 0)
+        {
+            base.Advance(step);
+            this._stamina -= this._maxStamina * 0.001f;
+        }
     }
 }
 

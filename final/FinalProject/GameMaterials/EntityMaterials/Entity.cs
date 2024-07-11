@@ -39,9 +39,13 @@ public abstract class Entity
     public void Heal(float healAmount)
     {
         this._health += healAmount;
+        if (this._health > this._maxHealth)
+        {
+            this._health = this._maxHealth;
+        }
     }
 
-    public void Advance(int[] step)
+    public virtual void Advance(int[] step)
     {
         this._xPos += step[0];
         this._yPos += step[1];

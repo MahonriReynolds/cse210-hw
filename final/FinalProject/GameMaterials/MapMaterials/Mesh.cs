@@ -10,44 +10,52 @@ public class EntityMesh
         this._enemies = [];
     }
 
-    public void AddEnemy(int[] center, bool[,] pathways, int width, int height)
+    public void AddEnemy(int[] center, bool[,] pathways)
     {
         List<Tuple<int, int>> validPositions = new List<Tuple<int, int>>();
-
-        width /= 3;
-        height /= 3;
 
         int rows = pathways.GetLength(0);
         int cols = pathways.GetLength(1);
 
-        int exclusionStartX = center[0] - width;
-        int exclusionStartY = center[1] - height;
-        for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
         {
-            for (int j = 0; j < cols; j++)
+            if (pathways[0, j])
             {
-                if (pathways[i, j])
-                {
-                    if (i < exclusionStartX || i >= exclusionStartX + width ||
-                        j < exclusionStartY || j >= exclusionStartY + height)
-                    {
-                        validPositions.Add(Tuple.Create(i, j));
-                    }
-                }
+                validPositions.Add(Tuple.Create(0, j));
+            }
+            if (pathways[rows - 1, j])
+            {
+                validPositions.Add(Tuple.Create(rows - 1, j));
             }
         }
 
-        Random random = new Random();
-        int randomIndex = random.Next(0, validPositions.Count);
-        Tuple<int, int> selectedPosition = validPositions[randomIndex];
-        int selectedRow = selectedPosition.Item1;
-        int selectedCol = selectedPosition.Item2;
+        for (int i = 0; i < rows; i++)
+        {
+            if (pathways[i, 0])
+            {
+                validPositions.Add(Tuple.Create(i, 0));
+            }
+            if (pathways[i, cols - 1])
+            {
+                validPositions.Add(Tuple.Create(i, cols - 1));
+            }
+        }
 
-        int adjustedRow = center[0] - (rows / 2) + selectedRow;
-        int adjustedCol = center[1] - (cols / 2) + selectedCol;
+        if (validPositions.Count > 0)
+        {
+            Random random = new Random();
+            int randomIndex = random.Next(0, validPositions.Count);
+            Tuple<int, int> selectedPosition = validPositions[randomIndex];
+            int selectedRow = selectedPosition.Item1;
+            int selectedCol = selectedPosition.Item2;
 
-        this._enemies.Add(new EnemyX(adjustedRow, adjustedCol, this._player));
+            int adjustedRow = center[0] - (rows / 2) + selectedRow;
+            int adjustedCol = center[1] - (cols / 2) + selectedCol;
+
+            this._enemies.Add(new EnemyX(adjustedRow, adjustedCol, this._player));
+        }
     }
+
 
     public bool CheckValidCenter(bool[,] pathways)
     {
