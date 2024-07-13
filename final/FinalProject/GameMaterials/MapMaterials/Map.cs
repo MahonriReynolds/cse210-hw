@@ -1,16 +1,15 @@
 
-
-
-public class Map:MapMaker
+public class Map
 {
     private Dictionary<(int, int), (char, bool)> _mapContent;
+    private MapMaker _mapMaker;
 
     public Map(int seed, int initWidth, int initHeight)
-    : base (seed)
     {
         this._mapContent = new Dictionary<(int, int), (char, bool)>();
         int startX = -(initWidth / 2);
         int startY = -(initHeight / 2);
+        this._mapMaker = new MapMaker(seed);
 
         for (int x = 0; x < initWidth; x++)
         {
@@ -18,7 +17,7 @@ public class Map:MapMaker
             for (int y = 0; y < initHeight; y++)
             {
                 int mapY = startY + y;
-                this._mapContent[(mapX, mapY)] = MakeCell(mapX, mapY);
+                this._mapContent[(mapX, mapY)] = this._mapMaker.MakeCell(mapX, mapY);
             }
         }
     }
@@ -40,7 +39,7 @@ public class Map:MapMaker
                 int mapY = startY + y;
                 if (!this._mapContent.ContainsKey((mapX, mapY)))
                 {
-                    this._mapContent[(mapX, mapY)] = MakeCell(mapX, mapY);
+                    this._mapContent[(mapX, mapY)] = this._mapMaker.MakeCell(mapX, mapY);
                 }
             }
         }
@@ -54,7 +53,7 @@ public class Map:MapMaker
                 int mapX = startX + x;
                 if (!this._mapContent.ContainsKey((mapX, mapY)))
                 {
-                    this._mapContent[(mapX, mapY)] = MakeCell(mapX, mapY);
+                    this._mapContent[(mapX, mapY)] = this._mapMaker.MakeCell(mapX, mapY);
                 }
             }
         }

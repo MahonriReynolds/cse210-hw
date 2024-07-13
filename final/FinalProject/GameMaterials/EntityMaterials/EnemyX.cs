@@ -3,12 +3,19 @@
 public class EnemyX:Entity
 {
     private PlayerO _targetPlayer;
+    private float _attack;
 
-    public EnemyX(int x, int y, PlayerO player)
-    : base (x, y, 3, 1, 'X')
+    public EnemyX(int x, int y, float attack, PlayerO player)
+    : base (x, y, 3, 'X')
     {
         this._targetPlayer = null;
         this._targetPlayer = player;
+        this._attack = attack;
+    }
+
+    public float GetAttack()
+    {
+        return this._attack;
     }
 
     public void Follow()
@@ -46,7 +53,7 @@ public class EnemyX:Entity
             }
         }
 
-        this.Advance(step);
+        base.Advance(step);
     }
 }
 

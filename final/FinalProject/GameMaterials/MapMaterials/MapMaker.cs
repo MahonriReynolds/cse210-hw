@@ -1,11 +1,11 @@
 
 
 
-public abstract class MapMaker
+public class MapMaker
 {
-    private readonly Random _random;
-    private readonly int[] _table;
-    private readonly double _scaler;
+    private Random _random;
+    private int[] _table;
+    private double _scaler;
 
     public MapMaker(int seed, double scaler=0.01, int tableSize=256)
     {
@@ -94,7 +94,7 @@ public abstract class MapMaker
         return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
     }
 
-    public double GenerateNoise(double xf, double yf)
+    private double GenerateNoise(double xf, double yf)
     {
         int X = (int)Math.Floor(xf) & 255;
         int Y = (int)Math.Floor(yf) & 255;

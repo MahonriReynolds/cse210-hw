@@ -52,7 +52,7 @@ public class EntityMesh
             int adjustedRow = center[0] - (rows / 2) + selectedRow;
             int adjustedCol = center[1] - (cols / 2) + selectedCol;
 
-            this._enemies.Add(new EnemyX(adjustedRow, adjustedCol, this._player));
+            this._enemies.Add(new EnemyX(adjustedRow, adjustedCol, 1, this._player));
         }
     }
 

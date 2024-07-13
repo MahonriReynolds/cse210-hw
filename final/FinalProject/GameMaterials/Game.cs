@@ -19,7 +19,7 @@ public class Game
         height -= 5;
         this._map = new Map(seed, width, height);
         this._camera = new Camera(width, height);
-        this._player = new PlayerO(1, 0, 100, 5, 50);
+        this._player = new PlayerO(1, 0, 100, 50);
         this._controller = new Controller();
         this._mesh = new EntityMesh(this._player);
         this._width = width;
