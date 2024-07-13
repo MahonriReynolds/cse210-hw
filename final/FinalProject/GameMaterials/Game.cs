@@ -62,7 +62,7 @@ public class Game
         }
         else
         {
-            this._player.Rest();
+            this._player.IncrementStatus();
         }
         
         int[] playerPos = this._player.Locate();
@@ -79,7 +79,7 @@ public class Game
         
         (char[,], bool[,]) mapSelection = this._map.GetSelection(this._centerPos, this._width, this._height);
 
-        if (IsElapsed(this._lastAddEnemy, (float)(4 / this._stopwatch.Elapsed.TotalSeconds)))
+        if (IsElapsed(this._lastAddEnemy, (float)(1 / this._stopwatch.Elapsed.TotalSeconds)))
         {
             this._mesh.AddEnemy(this._centerPos, mapSelection.Item2);
             this._lastAddEnemy = (float)this._stopwatch.Elapsed.TotalSeconds;
@@ -169,6 +169,7 @@ public class Game
 
          * Survive for 1 minute
          ** Rest if you need to
+         ** X's have a set lifespan
          ** X's get lost in lakes and forests
          ** Pathways lead you between lakes and forests
                 

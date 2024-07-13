@@ -1,7 +1,4 @@
 
-
-using System.Data;
-
 public class Camera
 {
     private Frame _frame1;

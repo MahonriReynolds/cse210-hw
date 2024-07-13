@@ -4,9 +4,9 @@ public abstract class Entity
 {
     private int _xPos;
     private int _yPos;
-    private int[] _prevStep;
-    private int _maxHealth;
-    private float _health;
+    protected int[] _prevStep;
+    protected int _maxHealth;
+    protected float _health;
     private float _attack;
     private char _model;
 
@@ -36,9 +36,9 @@ public abstract class Entity
         return this._health / this._maxHealth;
     }
 
-    public void Heal(float healAmount)
+    public virtual void IncrementStatus()
     {
-        this._health += healAmount;
+        this._health -= 0.1f;
         if (this._health > this._maxHealth)
         {
             this._health = this._maxHealth;

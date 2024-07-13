@@ -56,7 +56,6 @@ public class EntityMesh
         }
     }
 
-
     public bool CheckValidCenter(bool[,] pathways)
     {
         int initX = pathways.GetLength(0) / 2;
@@ -74,6 +73,12 @@ public class EntityMesh
 
         foreach (EnemyX enemy in this._enemies)
         {
+            enemy.IncrementStatus();
+            if (enemy.GetHealthPercentage() <= 0)
+            {
+                enemiesToRemove.Add(enemy);
+            }
+            
             enemy.Follow();
 
             int[] enemyCoords = enemy.Locate();

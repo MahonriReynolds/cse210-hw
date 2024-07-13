@@ -80,7 +80,6 @@ public class Map:MapMaker
         
         return (selection, pathways);
     }
-
 }
 
 

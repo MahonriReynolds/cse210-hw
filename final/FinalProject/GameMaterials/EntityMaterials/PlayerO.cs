@@ -45,9 +45,14 @@ public class PlayerO:Entity
         return this._stamina / this._maxStamina;
     }
 
-    public void Rest()
+    public override void IncrementStatus()
     {
-        this.Heal(0.01f);
+        this._health += 0.01f;
+        if (this._health > this._maxHealth)
+        {
+            this._health = this._maxHealth;
+        }
+        
         this._stamina += this._maxStamina * 0.0005f;
         if (this._stamina > this._maxStamina)
         {
@@ -61,6 +66,16 @@ public class PlayerO:Entity
         {
             base.Advance(step);
             this._stamina -= this._maxStamina * 0.001f;
+        }
+    }
+
+    public override void BackStep()
+    {
+        base.BackStep();
+        this._stamina -= this._maxStamina * 0.001f;
+        if (this._stamina < 0)
+        {
+            this._stamina = 0;
         }
     }
 }

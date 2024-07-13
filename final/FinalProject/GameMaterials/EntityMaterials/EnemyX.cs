@@ -5,7 +5,7 @@ public class EnemyX:Entity
     private PlayerO _targetPlayer;
 
     public EnemyX(int x, int y, PlayerO player)
-    : base (x, y, 2, 1, 'X')
+    : base (x, y, 3, 1, 'X')
     {
         this._targetPlayer = null;
         this._targetPlayer = player;
