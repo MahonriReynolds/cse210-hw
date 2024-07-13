@@ -196,11 +196,13 @@ public class Game
             iterationCode = this.Iterate();
             if (iterationCode == 1)
             {
+                this._stopwatch.Stop();
                 if (pauseMenu.Display() == 1)
                 {
                     return true;
                 }
                 this._camera.RecoverFrame();
+                this._stopwatch.Start();
             }
             else if (iterationCode == 2)
             {
