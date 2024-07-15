@@ -11,8 +11,6 @@ class Program
         while (width < 75 || height < 20)
         {
             Console.Clear();
-            width = Console.WindowWidth;
-            height = Console.WindowHeight;
             Console.WriteLine("The game will not display properly in too small of a terminal.");
             Console.WriteLine($"Width must be at least 75. Currently {width}");
             Console.WriteLine($"Height must be at least 20. Currently {height}");
@@ -22,6 +20,8 @@ class Program
             {
                 keyInfo = Console.ReadKey(true);
             } while (keyInfo.Key != ConsoleKey.Enter);
+            width = Console.WindowWidth;
+            height = Console.WindowHeight;
         }
         
         width = (int)(width * 0.90);
