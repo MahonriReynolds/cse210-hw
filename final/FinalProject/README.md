@@ -15,6 +15,7 @@ This is a 2D open world game that runs purely in the terminal using plain C#. Th
 
 ## Features
 - **Main Menu**: Options to start the game, view instructions, or quit the program.
+- **Pause Menu**: Options to resume or quit the current game.
 - **Survival Gameplay**: Survive for one minute while enemies spawn and follow the player.
 - **Enemy Types**: Multiple enemy types, each with unique movement patterns and lifespans.
 - **Map Features**: Landscapes such as forests and lakes that affect both player and enemy movement.
@@ -37,6 +38,10 @@ This is a 2D open world game that runs purely in the terminal using plain C#. Th
     - **Start Game**: Begin a new game session.
     - **Instructions**: Display gameplay instructions.
     - **Quit**: Exit the program.
+
+3. **Pause Menu**:
+    - **Resume**: Resume the current game session.
+    - **Main Menu**: Quit the current game and return to the main menu.
 
 ## Controls
 - **Movement**: Use the arrow keys (`↑`, `↓`, `←`, `→`) to move the player character.
