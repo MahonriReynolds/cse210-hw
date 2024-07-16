@@ -3,7 +3,6 @@
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
-- [Installation](#installation)
 - [Usage](#usage)
 - [Controls](#controls)
 - [Gameplay Instructions](#gameplay-instructions)
@@ -20,19 +19,9 @@ This is a 2D open world game that runs purely in the terminal using plain C#. Th
 - **Enemy Types**: Multiple enemy types, each with unique movement patterns and lifespans.
 - **Map Features**: Landscapes such as forests and lakes that affect both player and enemy movement.
 
-## Installation
-1. **Clone the Repository**:
-    ```bash
-    svn checkout https://github.com/MahonriReynolds/cse210-hw/trunk/final/FinalProject 2d-terminal-open-world-game
-    cd 2d-terminal-open-world-game
-    ```
-2. **Build the Project**:
-    - Open the project in your preferred C# IDE (e.g., Visual Studio).
-    - Build the solution.
-
 ## Usage
 1. **Run the Game**:
-    - Execute the compiled binary from your terminal or run the project from your IDE.
+    - Run the project from your IDE.
 
 2. **Main Menu**:
     - **Start Game**: Begin a new game session.
