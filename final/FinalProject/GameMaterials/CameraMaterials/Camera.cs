@@ -21,7 +21,10 @@ public class Camera
             {'~', ConsoleColor.DarkGray},
             {',', ConsoleColor.DarkGray},
             {'O', ConsoleColor.DarkMagenta},
-            {'X', ConsoleColor.DarkRed}
+            {'X', ConsoleColor.DarkRed},
+            {'W', ConsoleColor.DarkRed},
+            {'I', ConsoleColor.DarkRed},
+            {'H', ConsoleColor.DarkRed}
         };
     }
 

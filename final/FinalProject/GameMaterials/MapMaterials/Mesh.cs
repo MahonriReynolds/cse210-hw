@@ -2,17 +2,26 @@
 public class EntityMesh
 {
     private PlayerO _player;
-    private List<EnemyX> _enemies;
+    private List<Enemy> _enemies;
+    private Type[] _enemyTypes;
+    private Random _random;
 
     public EntityMesh(PlayerO player)
     {
         this._player = player;
         this._enemies = [];
+        this._enemyTypes = [
+                typeof(EnemyH),
+                typeof(EnemyI),
+                typeof(EnemyW),
+                typeof(EnemyX)
+            ];
+        this._random = new Random();
     }
 
     public void AddEnemy(int[] center, bool[,] pathways)
     {
-        List<Tuple<int, int>> validPositions = new List<Tuple<int, int>>();
+        List<Tuple<int, int>> validPositions = [];
 
         int rows = pathways.GetLength(0);
         int cols = pathways.GetLength(1);
@@ -43,8 +52,7 @@ public class EntityMesh
 
         if (validPositions.Count > 0)
         {
-            Random random = new Random();
-            int randomIndex = random.Next(0, validPositions.Count);
+            int randomIndex = this._random.Next(0, validPositions.Count);
             Tuple<int, int> selectedPosition = validPositions[randomIndex];
             int selectedRow = selectedPosition.Item1;
             int selectedCol = selectedPosition.Item2;
@@ -52,7 +60,10 @@ public class EntityMesh
             int adjustedRow = center[0] - (rows / 2) + selectedRow;
             int adjustedCol = center[1] - (cols / 2) + selectedCol;
 
-            this._enemies.Add(new EnemyX(adjustedRow, adjustedCol, 1, this._player));
+            Type enemyType = this._enemyTypes[this._random.Next(this._enemyTypes.Length)];
+            Enemy newEnemy = (Enemy)Activator.CreateInstance(enemyType, adjustedRow, adjustedCol, this._player);
+
+            this._enemies.Add(newEnemy);
         }
     }
 
@@ -69,11 +80,11 @@ public class EntityMesh
         int offsetX = pathways.GetLength(0) / 2;
         int offsetY = pathways.GetLength(1) / 2;
 
-        List<EnemyX> enemiesToRemove = [];
+        List<Enemy> enemiesToRemove = [];
 
-        foreach (EnemyX enemy in this._enemies)
+        foreach (Enemy enemy in this._enemies)
         {
-            enemy.IncrementStatus();
+            enemy.Decay();
             if (enemy.GetHealthPercentage() <= 0)
             {
                 enemiesToRemove.Add(enemy);
@@ -85,7 +96,7 @@ public class EntityMesh
             int enemyX = enemyCoords[0] - (center[0] - offsetX);
             int enemyY = enemyCoords[1] - (center[1] - offsetY);
 
-            foreach (EnemyX otherEnemy in this._enemies)
+            foreach (Enemy otherEnemy in this._enemies)
             {
                 if (enemy != otherEnemy)
                 {
@@ -108,7 +119,7 @@ public class EntityMesh
                 }
             }
         }
-        foreach (EnemyX enemyToRemove in enemiesToRemove)
+        foreach (Enemy enemyToRemove in enemiesToRemove)
         {
             this._enemies.Remove(enemyToRemove);
         }
@@ -128,7 +139,7 @@ public class EntityMesh
             playerCoords = this._player.Locate();
         }
 
-        foreach (EnemyX enemy in this._enemies)
+        foreach (Enemy enemy in this._enemies)
         {
             int[] enemyCoords = enemy.Locate();
 
@@ -153,7 +164,7 @@ public class EntityMesh
 
         selection[playerX, playerY] = $"{this._player}"[0];
 
-        foreach (EnemyX enemy in this._enemies)
+        foreach (Enemy enemy in this._enemies)
         {
             int[] enemyPos = enemy.Locate();
 

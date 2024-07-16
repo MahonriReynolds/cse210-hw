@@ -1,15 +1,18 @@
 
 
-public class EnemyX:Enemy
+public class EnemyH:Enemy
 {
-    public EnemyX(int x, int y, PlayerO player)
-    : base (x, y, 'X', 2, player)
-    { 
+    private int _hesitationCounter;
+
+    public EnemyH(int x, int y, PlayerO player)
+    : base (x, y, 'H', 1, player)
+    {
+        this._hesitationCounter = 0;
     }
 
     public override void Decay()
     {
-        this._health -= 0.1f;
+        this._health -= 0.075f;
         if (this._health > this._maxHealth)
         {
             this._health = this._maxHealth;
@@ -25,34 +28,25 @@ public class EnemyX:Enemy
 
         int[] step = [0, 0];
 
-        List<int> validDirections = new List<int>();
-        if (difference[0] != 0)
+        if (_hesitationCounter % 3 == 0)
         {
-            validDirections.Add(0);
-        }
-        if (difference[1] != 0)
-        {
-            validDirections.Add(1);
-        }
-
-        if (validDirections.Count > 0)
-        {
-            Random random = new Random();
-            int directionIndex = random.Next(validDirections.Count);
-            int direction = validDirections[directionIndex];
-
-            if (direction == 0)
+            if (difference[0] != 0)
             {
                 step[0] = Math.Sign(difference[0]);
             }
-            else if (direction == 1)
+            if (difference[1] != 0)
             {
                 step[1] = Math.Sign(difference[1]);
             }
         }
 
+        _hesitationCounter++;
+        base.Advance(step);
+        base.Advance(step);
         base.Advance(step);
     }
+
+
 }
 
 

@@ -1,15 +1,15 @@
 
 
-public class EnemyX:Enemy
+public class EnemyI:Enemy
 {
-    public EnemyX(int x, int y, PlayerO player)
-    : base (x, y, 'X', 2, player)
-    { 
+    public EnemyI(int x, int y, PlayerO player)
+    : base (x, y, 'I', 1, player)
+    {
     }
 
     public override void Decay()
     {
-        this._health -= 0.1f;
+        this._health -= 0.3f;
         if (this._health > this._maxHealth)
         {
             this._health = this._maxHealth;
@@ -25,27 +25,18 @@ public class EnemyX:Enemy
 
         int[] step = [0, 0];
 
-        List<int> validDirections = new List<int>();
-        if (difference[0] != 0)
+        if (difference[0] != 0 && difference[1] != 0)
         {
-            validDirections.Add(0);
+            step[0] = Math.Sign(difference[0]);
+            step[1] = Math.Sign(difference[1]);
         }
-        if (difference[1] != 0)
+        else
         {
-            validDirections.Add(1);
-        }
-
-        if (validDirections.Count > 0)
-        {
-            Random random = new Random();
-            int directionIndex = random.Next(validDirections.Count);
-            int direction = validDirections[directionIndex];
-
-            if (direction == 0)
+            if (difference[0] != 0)
             {
                 step[0] = Math.Sign(difference[0]);
             }
-            else if (direction == 1)
+            if (difference[1] != 0)
             {
                 step[1] = Math.Sign(difference[1]);
             }
@@ -53,6 +44,7 @@ public class EnemyX:Enemy
 
         base.Advance(step);
     }
+
 }
 
 

@@ -17,7 +17,7 @@ public class PlayerO:Entity
         return this._stamina / this._maxStamina;
     }
 
-    public override void IncrementStatus()
+    public void Rest()
     {
         this._health += 0.01f;
         if (this._health > this._maxHealth)

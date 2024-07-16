@@ -62,7 +62,7 @@ public class Game
         }
         else
         {
-            this._player.IncrementStatus();
+            this._player.Rest();
         }
         
         int[] playerPos = this._player.Locate();
@@ -169,8 +169,8 @@ public class Game
 
          * Survive for 1 minute
          ** Rest if you need to
-         ** X's have a set lifespan
-         ** X's get lost in lakes and forests
+         ** Enemies have a set lifespan
+         ** Enemies get lost in lakes and forests
          ** Pathways lead you between lakes and forests
                 
          * Close this page with Enter       

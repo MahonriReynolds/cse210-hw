@@ -29,15 +29,6 @@ public abstract class Entity
         return this._health / this._maxHealth;
     }
 
-    public virtual void IncrementStatus()
-    {
-        this._health -= 0.1f;
-        if (this._health > this._maxHealth)
-        {
-            this._health = this._maxHealth;
-        }
-    }
-
     public virtual void Advance(int[] step)
     {
         this._xPos += step[0];
