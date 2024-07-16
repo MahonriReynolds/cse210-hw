@@ -7,6 +7,13 @@
 - [Controls](#controls)
 - [Gameplay Instructions](#gameplay-instructions)
 
+
+
+![Sneak peak](https://github.com/MahonriReynolds/cse210-hw/blob/main/final/FinalProject/final.gif)
+
+
+
+
 ## Overview
 This is a 2D open world game that runs purely in the terminal using plain C#. The goal of the game is to survive for one minute, avoiding a growing swarm of enemies. The game features menus, multiple enemy types with different behaviors, and a map with obstacles like forests, lakes, and pathways.
 
