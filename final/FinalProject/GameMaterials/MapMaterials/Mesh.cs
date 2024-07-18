@@ -11,10 +11,10 @@ public class EntityMesh
         this._player = player;
         this._enemies = [];
         this._enemyTypes = [
+                typeof(EnemyX), typeof(EnemyX), typeof(EnemyX), typeof(EnemyX), typeof(EnemyX),
                 typeof(EnemyH),
                 typeof(EnemyI),
-                typeof(EnemyW),
-                typeof(EnemyX)
+                typeof(EnemyW)
             ];
         this._random = new Random();
     }
