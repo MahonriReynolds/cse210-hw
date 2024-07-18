@@ -8,7 +8,6 @@ public abstract class Enemy:Entity
     public Enemy(int x, int y, char model, float attack, PlayerO player)
     : base (x, y, 3, model)
     {
-        this._targetPlayer = null;
         this._targetPlayer = player;
         this._attack = attack;
     }
